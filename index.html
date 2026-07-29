@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Presentaciones interactivas de Geometría 7° — I.E. Merceditas Gómez Martínez, Medellín. Recursos de aula por período y semana.">
+<meta property="og:title" content="Geometría 7° · Presentaciones interactivas">
+<meta property="og:description" content="Portal de recursos de aula — I.E. Merceditas Gómez Martínez, Medellín">
+<meta property="og:type" content="website">
+<title>Geometría 7° · Presentaciones · I.E. Merceditas Gómez Martínez</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0F2040;--blue:#1C3A6E;--blue-mid:#2E75B6;
+  --green:#2E7D32;--teal:#00695C;--red:#B71C1C;
+  --cream:#F7F6F2;--warm:#EDECEA;--border:#DEDBD3;
+  --text:#1C1C1E;--text2:#3A3A3C;--text3:#6B6B6E;
+  --sky:#A8C4E8;
+}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',system-ui,sans-serif;background:var(--cream);color:var(--text);
+  line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;
+  display:flex;flex-direction:column;
+}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--blue-mid);outline-offset:3px;border-radius:4px}
+
+/* ── HERO ─────────────────────────────────────────── */
+.hero{
+  position:relative;overflow:hidden;
+  background:radial-gradient(120% 130% at 12% -10%, #16386a 0%, var(--navy) 58%, #091528 100%);
+  color:#fff;padding:clamp(38px,7vw,76px) clamp(22px,6vw,80px) clamp(44px,7vw,80px);
+}
+.hero-pattern{position:absolute;inset:0;opacity:.14;pointer-events:none}
+.hero-inner{position:relative;max-width:1180px;margin:0 auto}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:clamp(12px,1.3vw,15px);font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--sky);border:1px solid rgba(168,196,232,.35);border-radius:30px;
+  padding:7px 18px;margin-bottom:clamp(18px,2.5vw,26px);
+}
+.eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--teal)}
+h1{
+  font-family:'DM Serif Display',serif;font-weight:400;line-height:1.03;
+  font-size:clamp(40px,7vw,86px);letter-spacing:-.01em;
+}
+h1 .accent{font-style:italic;color:var(--sky)}
+.hero-sub{
+  font-size:clamp(17px,2.1vw,24px);color:rgba(255,255,255,.82);margin-top:clamp(14px,2vw,22px);
+  max-width:60ch;font-weight:400;
+}
+.hero-meta{display:flex;flex-wrap:wrap;gap:clamp(18px,3vw,44px);margin-top:clamp(24px,3.5vw,40px)}
+.hero-meta div{border-left:3px solid var(--teal);padding-left:14px}
+.hero-meta .k{font-size:clamp(11px,1.2vw,13px);letter-spacing:.14em;text-transform:uppercase;color:var(--sky)}
+.hero-meta .v{font-size:clamp(15px,1.7vw,19px);font-weight:700;margin-top:3px}
+
+/* ── MAIN ─────────────────────────────────────────── */
+main{flex:1;max-width:1180px;width:100%;margin:0 auto;
+  padding:clamp(34px,5vw,64px) clamp(22px,6vw,80px) clamp(28px,4vw,48px)}
+
+.period{margin-bottom:clamp(40px,6vw,72px)}
+.period-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;
+  padding-bottom:14px;border-bottom:2px solid var(--border);margin-bottom:clamp(22px,3vw,34px)}
+.period-tag{
+  font-size:clamp(13px,1.4vw,16px);font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:#fff;background:var(--blue);border-radius:7px;padding:6px 16px;flex-shrink:0;
+}
+.period-title{font-family:'DM Serif Display',serif;font-size:clamp(24px,3.4vw,40px);color:var(--navy);line-height:1.1}
+.period-note{font-size:clamp(14px,1.5vw,17px);color:var(--text3);font-style:italic;margin-left:auto}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));
+  gap:clamp(16px,2vw,26px)}
+
+/* ── TARJETA ──────────────────────────────────────── */
+.card{
+  position:relative;background:#fff;border:1px solid #ecebe7;border-radius:16px;
+  padding:clamp(20px,2.4vw,30px);display:flex;flex-direction:column;gap:14px;
+  box-shadow:0 2px 10px rgba(20,30,60,.05);
+  transition:transform .28s cubic-bezier(.22,.68,0,1.1),box-shadow .28s,border-color .28s;
+  text-decoration:none;color:inherit;overflow:hidden;
+  animation:rise .6s both;
+}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--wk,var(--blue))}
+.card .wknum{
+  font-family:'DM Serif Display',serif;font-size:clamp(46px,6vw,66px);line-height:.9;
+  color:var(--wk,var(--blue));
+}
+.card .eyebrow-sm{font-size:clamp(11px,1.2vw,13px);font-weight:700;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--wk,var(--blue))}
+.card h3{font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:clamp(21px,2.5vw,27px);color:var(--navy);line-height:1.14}
+.card .topic{font-size:clamp(14px,1.6vw,16.5px);color:var(--text2);line-height:1.45}
+.card .metaline{font-size:clamp(12.5px,1.4vw,14px);color:var(--text3);
+  display:flex;align-items:center;gap:8px;margin-top:2px}
+.card .metaline::before{content:"";width:6px;height:6px;border-radius:2px;background:var(--wk,var(--blue));flex-shrink:0}
+.card .cta{margin-top:auto;padding-top:6px;font-weight:700;font-size:clamp(14px,1.6vw,16px);
+  color:var(--wk,var(--blue));display:inline-flex;align-items:center;gap:8px;transition:gap .2s}
+.card .status{position:absolute;top:clamp(16px,2vw,22px);right:clamp(16px,2vw,22px);
+  font-size:clamp(10.5px,1.1vw,12px);font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:5px 11px;border-radius:20px}
+.status.ready{background:var(--wk);color:#fff}
+.status.soon{background:var(--warm);color:var(--text3)}
+
+/* estado disponible → interactivo */
+a.card:hover,a.card:focus-visible{transform:translateY(-5px);
+  box-shadow:0 14px 34px rgba(20,30,60,.14);border-color:var(--wk)}
+a.card:hover .cta{gap:14px}
+
+/* estado próximamente → atenuado, no interactivo */
+.card.soon{opacity:.72;background:#fbfaf8}
+.card.soon .wknum,.card.soon .eyebrow-sm,.card.soon h3,.card.soon .cta{color:var(--text3)}
+.card.soon::before{background:var(--border)}
+.card.soon .cta{font-weight:500}
+.card.soon .metaline::before{background:var(--border)}
+
+/* ── FOOTER ───────────────────────────────────────── */
+footer{background:var(--navy);color:rgba(255,255,255,.82);
+  padding:clamp(26px,4vw,42px) clamp(22px,6vw,80px);margin-top:auto}
+.foot-inner{max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;
+  gap:18px 40px;align-items:center;justify-content:space-between}
+.foot-inner .brand{font-family:'DM Serif Display',serif;font-size:clamp(18px,2.2vw,24px);color:#fff}
+.foot-inner .who{font-size:clamp(13px,1.5vw,15.5px);line-height:1.5}
+.foot-inner .who span{color:var(--sky);font-weight:600}
+.foot-tag{font-size:clamp(12px,1.3vw,14px);color:var(--sky);letter-spacing:.08em}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ HERO ═══════════ -->
+<header class="hero">
+  <svg class="hero-pattern" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <pattern id="tri" width="120" height="104" patternUnits="userSpaceOnUse" patternTransform="scale(1)">
+        <path d="M60 4 L116 100 L4 100 Z" fill="none" stroke="#A8C4E8" stroke-width="1.1"/>
+        <path d="M60 100 L116 4 M60 100 L4 4" stroke="#A8C4E8" stroke-width="1.1" opacity=".5"/>
+        <circle cx="60" cy="68" r="2.4" fill="#00695C"/>
+      </pattern>
+    </defs>
+    <rect width="1200" height="400" fill="url(#tri)"/>
+  </svg>
+  <div class="hero-inner">
+    <span class="eyebrow"><span class="dot"></span>I.E. Merceditas Gómez Martínez · Medellín</span>
+    <h1>Geometría <span class="accent">7°</span></h1>
+    <p class="hero-sub">Presentaciones interactivas de aula — organizadas por período y semana. Cada recurso construye el concepto antes de formalizarlo, con contextos reales de Medellín y Antioquia.</p>
+    <div class="hero-meta">
+      <div><div class="k">Grado</div><div class="v">Séptimo</div></div>
+      <div><div class="k">Modelo</div><div class="v">Yo hago · Hacemos · Tú haces</div></div>
+      <div><div class="k">Sesión</div><div class="v">55 minutos</div></div>
+      <div><div class="k">Docente</div><div class="v">Carlos A. Mena Romaña</div></div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ═══════════ PERÍODO 2 ═══════════ -->
+  <section class="period">
+    <div class="period-head">
+      <span class="period-tag">Período 2</span>
+      <h2 class="period-title">Áreas de figuras planas y el triángulo</h2>
+      <span class="period-note">Abril 2026 · Semanas 1–4</span>
+    </div>
+    <div class="grid">
+
+      <!-- Semana 1 (verde) — PRÓXIMAMENTE
+           Cuando subas la presentación, reemplaza este bloque por el mismo formato del bloque disponible:
+           cambia <article class="card soon"> por <a class="card" href="NOMBRE-DEL-ARCHIVO.html">,
+           cambia el badge "soon" por "ready" y el texto "Próximamente" por "Disponible". -->
+      <article class="card soon" style="--wk:var(--green);animation-delay:.02s" aria-disabled="true">
+        <span class="status soon">Próximamente</span>
+        <div class="wknum">1</div>
+        <div class="eyebrow-sm">Semana 1</div>
+        <h3>Área del paralelogramo y del triángulo</h3>
+        <p class="topic">Deducción por recorte y reconfiguración. El jardín de Don Jairo.</p>
+        <div class="metaline">1 sesión · 55 min · descubrimiento guiado</div>
+        <span class="cta">En preparación</span>
+      </article>
+
+      <!-- Semana 2 (azul) — PRÓXIMAMENTE -->
+      <article class="card soon" style="--wk:var(--blue-mid);animation-delay:.06s" aria-disabled="true">
+        <span class="status soon">Próximamente</span>
+        <div class="wknum">2</div>
+        <div class="eyebrow-sm">Semana 2</div>
+        <h3>Área del trapecio</h3>
+        <p class="topic">Descomposición por tres caminos. La cancha por pintar.</p>
+        <div class="metaline">1 sesión · 55 min · cooperativo en tríos</div>
+        <span class="cta">En preparación</span>
+      </article>
+
+      <!-- Semana 3 (teal) — DISPONIBLE ✅  (enlace real al archivo del repo) -->
+      <a class="card" style="--wk:var(--teal);animation-delay:.10s" href="Geometria7_P2_S3_Triangulos_v2_1.html">
+        <span class="status ready">Disponible</span>
+        <div class="wknum">3</div>
+        <div class="eyebrow-sm">Semana 3</div>
+        <h3>El equilibrio del triángulo</h3>
+        <p class="topic">Líneas notables (I): altura–ortocentro y mediana–baricentro. El quiosco de la vereda.</p>
+        <div class="metaline">1 sesión · 55 min · construcción + experimento físico</div>
+        <span class="cta">Abrir presentación →</span>
+      </a>
+
+      <!-- Semana 4 (rojo) — PRÓXIMAMENTE -->
+      <article class="card soon" style="--wk:var(--red);animation-delay:.14s" aria-disabled="true">
+        <span class="status soon">Próximamente</span>
+        <div class="wknum">4</div>
+        <div class="eyebrow-sm">Semana 4</div>
+        <h3>Puntos notables con GeoGebra</h3>
+        <p class="topic">Líneas notables (II): mediatriz–circuncentro y bisectriz–incentro. La biblioteca compartida.</p>
+        <div class="metaline">1 sesión · 55 min · modelación con GeoGebra</div>
+        <span class="cta">En preparación</span>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ═══════════ CÓMO AGREGAR MÁS PERÍODOS ═══════════
+       Copia el bloque <section class="period"> completo y ajusta el título,
+       la etiqueta del período y las tarjetas. Para una nueva semana disponible,
+       usa el formato de la tarjeta de Semana 3 (etiqueta <a class="card" href="...">).
+  ═══════════════════════════════════════════════════ -->
+
+</main>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+  <div class="foot-inner">
+    <div>
+      <div class="brand">Geometría 7°</div>
+      <div class="who">I.E. Merceditas Gómez Martínez · Medellín, Antioquia<br>Docente: <span>Carlos Alberto Mena Romaña</span></div>
+    </div>
+    <div class="foot-tag">Recursos de aula · Matemáticas</div>
+  </div>
+</footer>
+
+</body>
+</html>
