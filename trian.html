@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lámina · Ortocentro · Geometría 7°</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0F2040;--blue:#1C3A6E;--teal:#00695C;--teal-soft:#E0F2F1;
+  --amber:#C47C1A;--purple:#6A1B9A;--red:#B83232;
+  --cream:#F7F6F2;--warm:#EDECEA;--border:#C0BDB4;
+  --text:#1C1C1E;--text2:#3A3A3C;--sky:#A8C4E8;
+  --sb:clamp(220px,22vw,340px);
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+html,body{width:100%;height:100%;overflow:hidden;background:#0a101e;font-family:'DM Sans',system-ui,sans-serif;line-height:1.5}
+:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.stage{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--cream)}
+
+.hdr{background:var(--navy);height:clamp(38px,4.8vh,54px);display:flex;align-items:center;
+  justify-content:space-between;padding:0 clamp(14px,2vw,28px);flex-shrink:0}
+.hdr-b{font-size:clamp(12px,1.1vw,17px);color:var(--sky);font-weight:500}
+.hdr-b b{color:#fff}
+.hdr-badge{background:var(--teal);color:#fff;font-size:clamp(11px,1vw,16px);font-weight:800;
+  padding:4px 14px;border-radius:6px;letter-spacing:.08em;text-transform:uppercase;flex-shrink:0}
+
+.body{flex:1;min-height:0;display:flex;flex-direction:row}
+
+.sidebar{width:var(--sb);flex-shrink:0;display:flex;flex-direction:column;
+  padding:clamp(14px,1.8vh,24px) clamp(14px,1.8vw,24px);gap:clamp(10px,1.4vh,18px);
+  border-right:2.5px solid var(--border);background:var(--warm);overflow-y:auto}
+.stitle{font-family:'DM Serif Display',serif;font-size:clamp(20px,2.2vw,36px);color:var(--navy);line-height:1.08}
+.ssubt{font-size:clamp(13px,1.2vw,19px);color:var(--text2);font-style:italic;margin-top:2px}
+.sdiv{height:2px;background:var(--border);border-radius:2px;flex-shrink:0}
+
+.steps{display:flex;flex-direction:column;gap:clamp(6px,1vh,12px);flex:1}
+.cstep{display:flex;align-items:center;gap:clamp(8px,1vw,14px);
+  background:#fff;border:2px solid var(--border);border-radius:10px;border-left:5px solid var(--teal);
+  padding:clamp(7px,1vh,13px) clamp(10px,1.2vw,18px);
+  opacity:.3;transform:translateX(-3px);transition:opacity .4s,transform .4s,box-shadow .3s}
+.cstep.vis{opacity:1;transform:none;box-shadow:0 3px 10px rgba(20,30,60,.08)}
+.cstep .n{width:clamp(28px,2.8vw,38px);height:clamp(28px,2.8vw,38px);border-radius:50%;
+  background:var(--teal);color:#fff;font-weight:800;font-size:clamp(14px,1.5vw,22px);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cstep .t{font-size:clamp(13px,1.3vw,20px);font-weight:700;color:var(--navy);line-height:1.15}
+.cstep.s1{border-left-color:var(--blue)} .cstep.s1 .n{background:var(--blue)}
+.cstep.s2{border-left-color:var(--teal)} .cstep.s2 .n{background:var(--teal)}
+.cstep.s3{border-left-color:var(--amber)} .cstep.s3 .n{background:var(--amber)}
+.cstep.s4{border-left-color:var(--purple)} .cstep.s4 .n{background:var(--purple)}
+.cstep.s5{border-left-color:var(--red)} .cstep.s5 .n{background:var(--red)}
+
+.mats{background:var(--teal-soft);border:2px solid var(--teal);border-radius:10px;
+  padding:clamp(8px,1vh,14px) clamp(10px,1.2vw,16px);flex-shrink:0}
+.mats .lbl{font-size:clamp(11px,1vw,15px);font-weight:800;color:var(--teal);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.mats .note{font-size:clamp(11px,1vw,15px);color:var(--text2);line-height:1.35}
+
+.figpanel{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;padding:clamp(6px,.8vw,14px)}
+.figpanel svg{width:100%;height:100%}
+
+.rev{opacity:0;transition:opacity .45s ease}
+.rev.vis{opacity:1}
+
+/* Animación de deslizamiento de las escuadras */
+.esc{
+  opacity:0;
+  /* Usamos variables CSS (--dx y --dy) para definir el punto de entrada de cada escuadra */
+  transform:translate(var(--dx, 0), var(--dy, 100px));
+  transition:transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.5s ease-out;
+}
+.esc.vis{
+  opacity:1;
+  transform:translate(0, 0);
+}
+
+/* Variables para colorear dinámicamente el mismo molde de cartabón */
+.esc-s2 { --c-main: #00695C; --c-bg: rgba(0, 105, 92, 0.12); --c-edge: #004D40; --dx: -150px; --dy: 200px; }
+.esc-s3 { --c-main: #C47C1A; --c-bg: rgba(196, 124, 26, 0.12); --c-edge: #9A6010; --dx: 250px; --dy: -150px; }
+.esc-s4 { --c-main: #6A1B9A; --c-bg: rgba(106, 27, 154, 0.12); --c-edge: #4A148C; --dx: -250px; --dy: -250px; }
+
+#cart .bg { fill: var(--c-bg); stroke: var(--c-main); }
+#cart .edge { stroke: var(--c-edge); }
+#cart .sym { stroke: var(--c-main); }
+
+/* La línea se traza 0.7s DESPUÉS, esperando a que la escuadra aterrice */
+.draw-line{stroke-dasharray:460;stroke-dashoffset:460}
+.vis .draw-line{animation:drawLine 1s ease-out 0.7s forwards}
+@keyframes drawLine{to{stroke-dashoffset:0}}
+
+/* Las letras y puntos aparecen 1.4s DESPUÉS, esperando al trazo */
+.delay-reveal{opacity:0}
+.vis .delay-reveal{animation:fadeIn 0.4s ease forwards 1.4s}
+@keyframes fadeIn{to{opacity:1}}
+
+.ftr{background:var(--navy);height:clamp(28px,3.6vh,40px);display:flex;align-items:center;
+  justify-content:space-between;padding:0 clamp(14px,2vw,28px);flex-shrink:0}
+.ftr span{font-size:clamp(11px,1vw,15px);color:var(--sky);font-weight:500}
+
+#fs{position:fixed;top:clamp(6px,.8vh,12px);right:clamp(10px,1.2vw,18px);background:rgba(15,32,64,.75);
+  color:#fff;border:none;cursor:pointer;font-size:clamp(15px,1.5vw,20px);
+  width:clamp(34px,3.4vw,42px);height:clamp(34px,3.4vw,42px);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;z-index:50}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="hdr">
+    <div class="hdr-b">Geometría 7° · <b>Lámina de construcción</b></div>
+    <div class="hdr-badge">Ortocentro</div>
+  </div>
+
+  <div class="body">
+    <div class="sidebar">
+      <div>
+        <div class="stitle">Ortocentro de un triángulo</div>
+        <div class="ssubt">Intersección de las tres alturas</div>
+      </div>
+      <div class="sdiv"></div>
+      <div class="steps">
+        <div class="cstep s1 vis" data-step="1"><span class="n">1</span><span class="t">Traza el triángulo</span></div>
+        <div class="cstep s2" data-step="2"><span class="n">2</span><span class="t">Cartabón en BC · altura h<sub>a</sub></span></div>
+        <div class="cstep s3" data-step="3"><span class="n">3</span><span class="t">Cartabón en AC · altura h<sub>b</sub></span></div>
+        <div class="cstep s4" data-step="4"><span class="n">4</span><span class="t">Cartabón en AB · altura h<sub>c</sub></span></div>
+        <div class="cstep s5" data-step="5"><span class="n">5</span><span class="t">Ortocentro H</span></div>
+      </div>
+      <div class="sdiv"></div>
+      <div class="mats">
+        <div class="lbl">Recuerda</div>
+        <div class="note">📐 El <b>cartabón</b> (60°) asegura el ángulo de 90° con su esquina recta.<br>
+        La <b>altura</b> se traza por el cateto más largo hacia el vértice opuesto.<br>
+        En un △ <b>acutángulo</b> → H dentro.</div>
+      </div>
+    </div>
+
+    <div class="figpanel">
+      <svg viewBox="-10 -10 620 430" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Construcción animada del ortocentro con cartabón">
+
+        <defs>
+          <filter id="sombraPlana" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#0F2040" flood-opacity="0.12"/>
+          </filter>
+
+          <!-- MOLDE MAESTRO MATEMÁTICO: Cartabón 30-60-90. -->
+          <g id="cart">
+            <path class="bg" d="M 0,0 L 173.2,0 L 0,-300 Z M 28,-28 L 28,-195.5 L 124.7,-28 Z" fill-rule="evenodd" stroke-linejoin="round" stroke-width="1.5"/>
+            <line class="edge" x1="0" y1="0" x2="173.2" y2="0" stroke-width="4.5" stroke-linecap="round"/>
+            <line class="edge" x1="0" y1="0" x2="0" y2="-300" stroke-width="4.5" stroke-linecap="round"/>
+            <path class="sym" d="M 20,0 L 20,-20 L 0,-20" fill="none" stroke-width="2.5"/>
+          </g>
+        </defs>
+
+        <!-- ═══ PASO 1 — Triángulo ═══ -->
+        <g class="rev vis" data-step="1">
+          <polygon points="230,30 40,380 560,380" fill="rgba(28,58,110,.03)" stroke="#1C3A6E" stroke-width="3.5" stroke-linejoin="round"/>
+          <circle cx="230" cy="30" r="6" fill="#0F2040"/>
+          <text x="214" y="20" font-size="24" fill="#1C1C1E" font-weight="800" font-family="DM Sans,sans-serif">A</text>
+          <circle cx="40" cy="380" r="6" fill="#0F2040"/>
+          <text x="14" y="380" font-size="24" fill="#1C1C1E" font-weight="800" font-family="DM Sans,sans-serif">B</text>
+          <circle cx="560" cy="380" r="6" fill="#0F2040"/>
+          <text x="568" y="380" font-size="24" fill="#1C1C1E" font-weight="800" font-family="DM Sans,sans-serif">C</text>
+        </g>
+
+        <!-- ═══ PASO 2 — Cartabón en BC (Verde) ═══ -->
+        <g class="esc esc-s2" data-step="2" data-only filter="url(#sombraPlana)">
+          <g transform="translate(230, 380)">
+            <use href="#cart"/>
+          </g>
+        </g>
+
+        <!-- ═══ PASO 2 — Altura ha ═══ -->
+        <g class="rev" data-step="2">
+          <line class="draw-line" x1="230" y1="30" x2="230" y2="380" stroke="#00695C" stroke-width="3" stroke-dasharray="460" stroke-dashoffset="460"/>
+          <g class="delay-reveal">
+            <circle cx="230" cy="380" r="4" fill="#00695C"/>
+            <path d="M245,380 L245,365 L230,365" fill="none" stroke="#00695C" stroke-width="2.2"/>
+            <text x="214" y="404" font-size="16" fill="#00695C" font-weight="700" font-family="DM Sans,sans-serif">H<tspan font-size="11" dy="3">a</tspan></text>
+          </g>
+          <text x="238" y="210" font-size="18" fill="#00695C" font-weight="700" font-family="DM Sans,sans-serif" class="delay-reveal">h<tspan font-size="12" dy="4">a</tspan></text>
+        </g>
+
+        <!-- ═══ PASO 3 — Cartabón en AC (Ámbar) ═══ -->
+        <g class="esc esc-s3" data-step="3" data-only filter="url(#sombraPlana)">
+          <g transform="translate(315.3, 120.5) rotate(226.7)">
+            <use href="#cart"/>
+          </g>
+        </g>
+
+        <!-- ═══ PASO 3 — Altura hb ═══ -->
+        <g class="rev" data-step="3">
+          <line class="draw-line" x1="40" y1="380" x2="315.3" y2="120.5" stroke="#C47C1A" stroke-width="3" stroke-dasharray="460" stroke-dashoffset="460"/>
+          <g class="delay-reveal">
+            <circle cx="315.3" cy="120.5" r="4" fill="#C47C1A"/>
+            <path d="M326,131 L315,141 L305,130" fill="none" stroke="#C47C1A" stroke-width="2.2"/>
+            <text x="323" y="118" font-size="16" fill="#C47C1A" font-weight="700" font-family="DM Sans,sans-serif">H<tspan font-size="11" dy="3">b</tspan></text>
+          </g>
+          <text x="157" y="262" font-size="18" fill="#C47C1A" font-weight="700" font-family="DM Sans,sans-serif" transform="rotate(-43 157 262)" class="delay-reveal">h<tspan font-size="12" dy="4">b</tspan></text>
+        </g>
+
+        <!-- ═══ PASO 4 — Cartabón en AB (Morado) ═══ -->
+        <g class="esc esc-s4" data-step="4" data-only filter="url(#sombraPlana)">
+          <g transform="translate(158.4, 162.0) rotate(118.5)">
+            <use href="#cart"/>
+          </g>
+        </g>
+
+        <!-- ═══ PASO 4 — Altura hc ═══ -->
+        <g class="rev" data-step="4">
+          <line class="draw-line" x1="560" y1="380" x2="158.4" y2="162.0" stroke="#6A1B9A" stroke-width="3" stroke-dasharray="460" stroke-dashoffset="460"/>
+          <g class="delay-reveal">
+            <circle cx="158.4" cy="162.0" r="4" fill="#6A1B9A"/>
+            <path d="M151,175 L164,182 L171,169" fill="none" stroke="#6A1B9A" stroke-width="2.2"/>
+            <text x="142" y="156" font-size="16" fill="#6A1B9A" font-weight="700" font-family="DM Sans,sans-serif">H<tspan font-size="11" dy="3">c</tspan></text>
+          </g>
+          <text x="340" y="285" font-size="18" fill="#6A1B9A" font-weight="700" font-family="DM Sans,sans-serif" transform="rotate(28 340 285)" class="delay-reveal">h<tspan font-size="12" dy="4">c</tspan></text>
+        </g>
+
+        <!-- ═══ PASO 5 — Ortocentro H ═══ -->
+        <g class="rev" data-step="5">
+          <circle cx="230" cy="200.85" r="11" fill="#B83232"/>
+          <circle cx="230" cy="200.85" r="18" fill="none" stroke="#B83232" stroke-width="2.5" opacity=".3"/>
+          <text x="254" y="197" font-size="28" fill="#B83232" font-weight="800" font-family="DM Serif Display,serif">H</text>
+          <text x="254" y="220" font-size="16" fill="#3A3A3C" font-family="DM Sans,sans-serif" font-style="italic">Ortocentro</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="ftr">
+    <span>Geometría 7° — Lámina: Ortocentro</span>
+    <span>I.E. Merceditas Gómez Martínez · Medellín</span>
+  </div>
+</div>
+
+<button id="fs" title="Pantalla completa (F)" aria-label="Pantalla completa">⛶</button>
+<script>
+const TOTAL=5;let step=1;
+function render(){
+  document.querySelectorAll('[data-step]').forEach(el=>{
+    const s=parseInt(el.getAttribute('data-step'),10);
+    if(el.hasAttribute('data-only')){
+      el.classList.toggle('vis', s===step);
+    } else {
+      el.classList.toggle('vis', s<=step);
+    }
+  });
+}
+function next(){if(step<TOTAL){step++;render();}}
+function prev(){if(step>1){step--;render();}}
+document.addEventListener('click',e=>{if(e.target.closest('#fs'))return;next();});
+document.addEventListener('keydown',e=>{
+  if(['Space','ArrowRight','PageDown'].includes(e.code)){e.preventDefault();next();}
+  else if(['ArrowLeft','PageUp'].includes(e.code)){e.preventDefault();prev();}
+  else if(e.code==='Home'){step=1;render();}
+  else if(e.code==='End'){step=TOTAL;render();}
+  else if(e.code==='KeyF'){document.getElementById('fs').click();}
+});
+const fs=document.getElementById('fs');
+fs.onclick=async e=>{e.stopPropagation();try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen();}catch(e){}};
+document.addEventListener('fullscreenchange',()=>{fs.textContent=document.fullscreenElement?'✕':'⛶';});
+render();
+</script>
+</body>
+</html>
