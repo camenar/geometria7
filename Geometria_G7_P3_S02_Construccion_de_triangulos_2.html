@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Geometría 7° · Semana 2 · Construcción de triángulos · I.E. Merceditas Gómez Martínez</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0F2040;--blue:#1C3A6E;--blue-mid:#2E75B6;
+  --green:#2E7D32;--teal:#00695C;--teal-soft:#E0F2F1;
+  --amber:#C47C1A;--red:#B83232;--purple:#6A1B9A;
+  --cream:#F7F6F2;--warm:#EDECEA;--border:#C0BDB4;
+  --text:#1C1C1E;--text2:#3A3A3C;--text3:#4A4A4E;--sky:#A8C4E8;
+  --green-s:#27AE60;--amber-s:#E08C20;--red-s:#C0392B;
+  --s1:#2E7D32;--s2:#2E75B6;--s3:#00695C;--s4:#B83232;
+  --fs-xs:clamp(13px,1.2vw,19px);--fs-sm:clamp(15px,1.5vw,22px);
+  --fs-md:clamp(18px,1.8vw,27px);--fs-lg:clamp(22px,2.3vw,33px);
+  --fs-xl:clamp(27px,2.9vw,42px);--fs-2xl:clamp(36px,4.1vw,58px);
+  --fs-3xl:clamp(52px,6.5vw,94px);--fs-hero:clamp(64px,9vw,130px);
+  --pad-h:clamp(18px,2.6vw,46px);--pad-v:clamp(12px,1.6vh,24px);
+  --gap:clamp(9px,1.2vh,16px);--hdr-h:clamp(42px,5vh,58px);
+  --ftr-h:clamp(32px,3.6vh,46px);--pan-w:clamp(140px,12vw,210px);
+  --accent-w:clamp(7px,.6vw,12px);--radius:clamp(8px,.8vw,14px);
+  --dot-sz:clamp(30px,3vw,42px);--sb:clamp(230px,24vw,360px);
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+@media(max-width:900px){
+  .hac-grid,.meta-layout,.obj-grid{grid-template-columns:1fr!important}
+  .lam-body{flex-direction:column!important}.sidebar{width:100%!important;border-right:none!important;border-bottom:2.5px solid var(--border)!important}
+}
+html,body{width:100%;height:100%;overflow:hidden;background:#0a101e;font-family:'DM Sans',system-ui,sans-serif;line-height:1.5}
+:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+#deck{width:100vw;height:100vh;position:relative;overflow:hidden}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;background:var(--cream)}
+.slide.active{opacity:1;pointer-events:all}
+.slide.enter-r{animation:inR .35s cubic-bezier(.22,.68,0,1.15) forwards}
+.slide.enter-l{animation:inL .35s cubic-bezier(.22,.68,0,1.15) forwards}
+@keyframes inR{from{transform:translateX(4%);opacity:0}to{transform:none;opacity:1}}
+@keyframes inL{from{transform:translateX(-4%);opacity:0}to{transform:none;opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+
+/* ── HEADER / FOOTER ── */
+.hdr{background:var(--navy);height:var(--hdr-h);display:flex;align-items:center;padding:0 var(--pad-h);justify-content:space-between;flex-shrink:0;gap:14px}
+.hdr-b{font-size:var(--fs-sm);color:var(--sky);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hdr-b b{color:#fff;font-weight:700}
+.hdr-t{color:#fff;font-size:var(--fs-xs);font-weight:800;padding:5px 15px;border-radius:6px;letter-spacing:.08em;text-transform:uppercase;flex-shrink:0}
+.ftr{background:var(--navy);height:var(--ftr-h);display:flex;align-items:center;padding:0 var(--pad-h);justify-content:space-between;flex-shrink:0;gap:14px}
+.ftr span{font-size:var(--fs-xs);color:var(--sky);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.body{flex:1;overflow-y:auto;min-height:0;padding:var(--pad-v) var(--pad-h);display:flex;flex-direction:column;gap:var(--gap)}
+
+/* ── PORTADA ── */
+.s-portada{background:var(--navy);align-items:center;justify-content:center}
+.p-inner{display:flex;flex-direction:column;align-items:center;gap:var(--gap);text-align:center;padding:var(--pad-v) var(--pad-h);width:100%}
+.p-badge{font-size:var(--fs-sm);letter-spacing:.1em;text-transform:uppercase;color:var(--sky);font-weight:600}
+.p-title{font-family:'DM Serif Display',serif;font-size:var(--fs-3xl);color:#fff;line-height:1.05;animation:fadeUp .8s .1s both}
+.p-title em{font-style:normal}
+.p-sub{font-size:var(--fs-md);color:var(--sky);animation:fadeUp .8s .3s both}
+.p-sessions{display:flex;gap:var(--gap);margin-top:4px;animation:fadeUp .8s .5s both;justify-content:center;flex-wrap:wrap}
+.psess{background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.18);border-radius:var(--radius);padding:14px 20px;display:flex;flex-direction:column;align-items:center;gap:8px;min-width:140px;max-width:210px}
+.psess.on{background:rgba(46,117,182,.28);border-color:#8EB8E5}
+.psess-n{width:var(--dot-sz);height:var(--dot-sz);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:var(--fs-md)}
+.psess-t{font-size:var(--fs-sm);font-weight:700;color:#fff;text-align:center;line-height:1.25}
+.psess-s{font-size:var(--fs-xs);color:var(--sky);font-style:italic;text-align:center}
+.click-hint{font-size:var(--fs-xs);color:rgba(168,196,232,.6);animation:pulse 2s infinite;margin-top:4px}
+
+/* ── PORTADA DE SESIÓN (ancho completo) ── */
+.cov{flex:1;min-height:0;display:flex;flex-direction:column;gap:clamp(12px,1.8vh,26px);justify-content:center}
+.cov-top{display:flex;align-items:center;gap:clamp(14px,2vw,30px)}
+.cov-num{width:clamp(72px,8vw,124px);height:clamp(72px,8vw,124px);border-radius:clamp(14px,1.6vw,24px);
+  background:var(--s2);color:#fff;font-family:'DM Serif Display',serif;font-size:var(--fs-2xl);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 6px 18px rgba(46,117,182,.28)}
+.cov-kicker{font-size:var(--fs-xs);font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--s2)}
+.cov-title{font-family:'DM Serif Display',serif;font-size:var(--fs-2xl);color:var(--navy);line-height:1.05;margin-top:2px}
+.cov-sub{font-size:var(--fs-md);color:var(--text2);letter-spacing:.06em;font-weight:600}
+.sess-ruta{font-size:var(--fs-sm);color:var(--text2);font-style:italic;text-align:center}
+.divider{height:2px;background:var(--border);border-radius:2px;flex-shrink:0}
+.obj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
+.obj-card{background:#fff;border:2px solid var(--border);border-top:5px solid var(--s2);border-radius:var(--radius);padding:clamp(10px,1.4vh,18px) clamp(12px,1.2vw,20px);display:flex;flex-direction:column;gap:8px}
+.obj-n{width:var(--dot-sz);height:var(--dot-sz);border-radius:50%;background:var(--s2);color:#fff;font-weight:800;font-size:var(--fs-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.obj-tx{font-size:var(--fs-sm);color:var(--text);line-height:1.35}
+.tiempo{background:var(--navy);border-radius:var(--radius);padding:clamp(9px,1.2vh,15px) var(--pad-h);font-size:var(--fs-sm);font-weight:600;color:#fff;text-align:center;flex-shrink:0}
+
+/* ── TÍTULOS ── */
+.title-row{display:flex;align-items:flex-start;gap:var(--gap);flex-shrink:0}
+.accent{width:var(--accent-w);border-radius:5px;flex-shrink:0;align-self:stretch;min-height:40px}
+.mbadge{display:inline-flex;align-items:center;gap:8px;color:#fff;font-size:var(--fs-xs);font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:5px 15px;border-radius:6px;margin-bottom:4px}
+.slide-title{font-family:'DM Serif Display',serif;font-size:var(--fs-xl);color:var(--navy);line-height:1.1}
+.slide-instr{font-size:var(--fs-sm);color:var(--text2);font-style:italic;margin-top:3px;line-height:1.4}
+
+/* ══ LÁMINA DE CONSTRUCCIÓN ══ */
+.s-lamina .body{padding:0;gap:0;overflow:hidden}
+.lam-body{flex:1;min-height:0;display:flex;flex-direction:row}
+.sidebar{width:var(--sb);flex-shrink:0;display:flex;flex-direction:column;
+  padding:clamp(12px,1.6vh,22px) clamp(12px,1.5vw,22px);gap:clamp(9px,1.2vh,16px);
+  border-right:2.5px solid var(--border);background:var(--warm);overflow-y:auto}
+.stitle{font-family:'DM Serif Display',serif;font-size:var(--fs-lg);color:var(--navy);line-height:1.08}
+.ssubt{font-size:var(--fs-xs);color:var(--text2);font-style:italic;margin-top:3px}
+.sdiv{height:2px;background:var(--border);border-radius:2px;flex-shrink:0}
+.datos{display:flex;gap:6px;flex-wrap:wrap}
+.datos b{font-size:var(--fs-xs);font-weight:800;color:#fff;padding:4px 12px;border-radius:20px;letter-spacing:.02em}
+.steps{display:flex;flex-direction:column;gap:clamp(6px,.9vh,11px);flex:1}
+.cstep{display:flex;align-items:center;gap:clamp(8px,.9vw,13px);background:#fff;border:2px solid var(--border);
+  border-radius:10px;border-left:5px solid var(--teal);padding:clamp(7px,.9vh,12px) clamp(9px,1.1vw,16px);
+  opacity:.3;transform:translateX(-3px);transition:opacity .4s,transform .4s,box-shadow .3s}
+.cstep.vis{opacity:1;transform:none;box-shadow:0 3px 10px rgba(20,30,60,.08)}
+.cstep .n{width:clamp(26px,2.6vw,36px);height:clamp(26px,2.6vw,36px);border-radius:50%;background:var(--teal);
+  color:#fff;font-weight:800;font-size:var(--fs-xs);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cstep .t{font-size:var(--fs-xs);font-weight:700;color:var(--navy);line-height:1.2}
+.cstep.k1{border-left-color:var(--blue)} .cstep.k1 .n{background:var(--blue)}
+.cstep.k2{border-left-color:var(--teal)} .cstep.k2 .n{background:var(--teal)}
+.cstep.k3{border-left-color:var(--amber)} .cstep.k3 .n{background:var(--amber)}
+.cstep.k4{border-left-color:var(--purple)} .cstep.k4 .n{background:var(--purple)}
+.cstep.k5{border-left-color:var(--red)} .cstep.k5 .n{background:var(--red)}
+.mats{background:var(--teal-soft);border:2px solid var(--teal);border-radius:10px;padding:clamp(8px,1vh,13px) clamp(10px,1.1vw,15px);flex-shrink:0}
+.mats .lbl{font-size:var(--fs-xs);font-weight:800;color:var(--teal);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px}
+.mats .note{font-size:var(--fs-xs);color:var(--text2);line-height:1.35}
+.figpanel{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;padding:clamp(6px,.8vw,14px);background:var(--cream)}
+.figpanel svg{width:100%;height:100%}
+
+.rev{opacity:0;transition:opacity .45s ease}
+.rev.vis{opacity:1}
+.esc{opacity:0;transform:translate(var(--dx,0),var(--dy,100px));
+  transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .5s ease-out}
+.esc.vis{opacity:1;transform:translate(0,0)}
+.esc-t{--c-main:#00695C;--c-bg:rgba(0,105,92,.12);--c-edge:#004D40;--dx:-180px;--dy:230px}
+.esc-a{--c-main:#C47C1A;--c-bg:rgba(196,124,26,.12);--c-edge:#9A6010;--dx:280px;--dy:-180px}
+.esc-p{--c-main:#6A1B9A;--c-bg:rgba(106,27,154,.12);--c-edge:#4A148C;--dx:-280px;--dy:-260px}
+.esc-b{--c-main:#1C3A6E;--c-bg:rgba(28,58,110,.12);--c-edge:#0F2040;--dx:220px;--dy:250px}
+.tool .bg{fill:var(--c-bg);stroke:var(--c-main)}
+.tool .edge{stroke:var(--c-edge)}
+.tool .sym{stroke:var(--c-main)}
+.tool .leg{stroke:var(--c-main);stroke-linecap:round}
+.tool .knob{fill:var(--c-edge)}
+.tool .tip{fill:var(--c-edge)}
+.draw{stroke-dasharray:var(--len,550);stroke-dashoffset:var(--len,550)}
+.vis .draw{animation:drawIt 1s ease-out .7s forwards}
+@keyframes drawIt{to{stroke-dashoffset:0}}
+.late{opacity:0}
+.vis .late{animation:fadeInLate .4s ease forwards 1.4s}
+@keyframes fadeInLate{to{opacity:1}}
+
+/* ── DETONANTE ── */
+.s-gancho .body{padding:0;gap:0}
+
+/* ── TARJETAS ── */
+.hac-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);flex:1;min-height:0;align-content:start}
+.hac-card{background:#fff;border-radius:var(--radius);border:2px solid var(--border);border-top:5px solid transparent;padding:clamp(11px,1.4vh,19px) clamp(13px,1.3vw,22px);display:flex;flex-direction:column;gap:7px;opacity:0;transform:translateY(12px);transition:opacity .45s,transform .45s}
+.hac-card.vis{opacity:1;transform:none}
+.hac-head{display:flex;align-items:center;gap:10px}
+.hac-n{width:var(--dot-sz);height:var(--dot-sz);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:var(--fs-sm);color:#fff;flex-shrink:0}
+.hac-tag{padding:5px 14px;border-radius:8px;color:#fff;font-weight:800;font-size:var(--fs-sm);letter-spacing:.14em;flex-shrink:0}
+.hac-title{font-size:var(--fs-md);font-weight:700;color:var(--text);line-height:1.2}
+.hac-ctx{font-size:var(--fs-sm);color:var(--text2);font-style:italic;line-height:1.4}
+.hac-task{background:var(--warm);border-radius:6px;padding:7px 12px;font-size:var(--fs-sm);color:var(--navy);font-style:italic;font-weight:600;border-left:4px solid var(--blue-mid);line-height:1.35}
+.hac-answer{border-radius:6px;padding:8px 12px;font-size:var(--fs-sm);font-weight:600;opacity:0;transition:opacity .4s;line-height:1.4}
+
+/* ── TRANSICIÓN ── */
+.s-trans{background:var(--navy);align-items:center;justify-content:center}
+.trans-big{font-family:'DM Serif Display',serif;font-size:var(--fs-3xl);color:#fff;line-height:1;animation:fadeUp .6s both}
+.trans-sub{font-size:var(--fs-lg);color:var(--sky);animation:fadeUp .6s .2s both}
+.trans-note{font-size:var(--fs-sm);color:rgba(168,196,232,.7);font-style:italic;animation:fadeUp .6s .4s both}
+
+/* ── METACOGNICIÓN ── */
+.meta-layout{display:grid;grid-template-columns:1.05fr 1fr;gap:var(--gap);flex:1;min-height:0;align-content:start}
+.meta-l,.meta-r{display:flex;flex-direction:column;gap:var(--gap)}
+.meta-qbox{background:var(--teal-soft);border:2.5px solid var(--teal);border-radius:var(--radius);padding:clamp(11px,1.4vh,19px) clamp(13px,1.3vw,22px);display:flex;flex-direction:column;gap:6px}
+.meta-qlbl{font-size:var(--fs-xs);font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--teal)}
+.meta-qtxt{font-family:'DM Serif Display',serif;font-size:var(--fs-md);color:var(--text);font-style:italic;line-height:1.45}
+.cuad-t,.sema-t{font-size:var(--fs-sm);font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.1em}
+.cuad-items,.sema-items{display:flex;flex-direction:column;gap:clamp(7px,1vh,13px)}
+.cuad-item{display:flex;align-items:flex-start;gap:10px;background:#fff;border:2px solid var(--border);border-radius:var(--radius);padding:clamp(8px,1.1vh,15px) clamp(11px,1.2vw,18px);border-left:5px solid var(--teal);font-size:var(--fs-sm);color:var(--text);line-height:1.35}
+.cuad-n{font-weight:800;color:var(--teal);flex-shrink:0;min-width:20px}
+.sema-item{display:flex;align-items:center;gap:13px;background:#fff;border-radius:var(--radius);padding:clamp(8px,1.1vh,15px) clamp(11px,1.2vw,18px);border:2px solid var(--border);opacity:0;transform:translateX(14px);transition:opacity .5s,transform .5s}
+.sema-item.vis{opacity:1;transform:none}
+.sema-c{width:clamp(34px,3.6vw,50px);height:clamp(34px,3.6vw,50px);border-radius:50%;flex-shrink:0;border:3px solid rgba(0,0,0,.1)}
+.sema-txt{font-size:var(--fs-sm);color:var(--text);line-height:1.3}
+.sema-txt strong{display:block;font-size:var(--fs-xs);color:var(--text3);margin-top:2px;font-weight:600}
+
+/* ── NAV ── */
+#nav{position:fixed;bottom:clamp(10px,1.8vh,20px);right:clamp(14px,1.8vw,28px);display:flex;align-items:center;gap:9px;z-index:100}
+.nbtn{width:clamp(38px,3.8vw,50px);height:clamp(38px,3.8vw,50px);border-radius:50%;background:rgba(15,32,64,.88);border:1.5px solid rgba(255,255,255,.18);color:#fff;cursor:pointer;font-size:clamp(16px,1.8vw,22px);display:flex;align-items:center;justify-content:center;transition:background .2s}
+.nbtn:hover{background:var(--blue-mid)}
+#ncnt{font-size:clamp(13px,1.3vw,18px);color:rgba(255,255,255,.88);background:rgba(15,32,64,.75);padding:5px 15px;border-radius:20px;font-family:monospace;font-weight:600}
+#pbar{position:fixed;bottom:0;left:0;height:5px;background:var(--s2);transition:width .35s ease;z-index:100}
+#fs-btn{position:fixed;top:clamp(6px,.8vh,11px);right:clamp(50px,5.5vw,74px);z-index:200;background:rgba(15,32,64,.7);border:1px solid rgba(255,255,255,.2);color:#fff;cursor:pointer;font-size:15px;width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center}
+#fs-btn:hover{background:var(--blue-mid)}
+#hint{position:fixed;bottom:clamp(10px,1.8vh,20px);left:clamp(14px,1.8vw,28px);font-size:12px;color:rgba(255,255,255,.5);background:rgba(15,32,64,.65);padding:5px 13px;border-radius:20px;font-family:monospace;transition:opacity .3s;z-index:100}
+</style>
+</head>
+<body>
+<div id="deck"></div>
+<button id="fs-btn" title="Pantalla completa (F)" aria-label="Pantalla completa">⛶</button>
+<div id="nav">
+  <button class="nbtn" id="bp" aria-label="Anterior">&#8592;</button>
+  <span id="ncnt">1 / 1</span>
+  <button class="nbtn" id="bn" aria-label="Siguiente">&#8594;</button>
+</div>
+<div id="pbar"></div>
+<div id="hint">Espacio / → avanzar &nbsp;·&nbsp; ← retroceder &nbsp;·&nbsp; F pantalla completa</div>
+
+<!-- ═══ MOLDES DE HERRAMIENTAS (compartidos por todas las láminas) ═══ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <filter id="sombraPlana" x="-25%" y="-25%" width="150%" height="150%">
+    <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#0F2040" flood-opacity="0.14"/>
+  </filter>
+  <!-- REGLA: borde de trazado en y=0 -->
+  <g id="regla">
+    <rect class="bg" x="0" y="0" width="470" height="34" rx="4" stroke-width="1.5"/>
+    <line class="edge" x1="0" y1="0" x2="470" y2="0" stroke-width="4.5" stroke-linecap="round"/>
+    <g opacity=".65">
+      <line class="sym" x1="10" y1="4" x2="460" y2="4" stroke-width="8" stroke-dasharray="1 9"/>
+      <line class="sym" x1="10" y1="6" x2="460" y2="6" stroke-width="12" stroke-dasharray="2 48"/>
+    </g>
+  </g>
+  <!-- COMPÁS: aguja en (0,0), mina en (300,0), bisagra arriba -->
+  <g id="compas">
+    <line class="leg" x1="0" y1="0" x2="150" y2="-250" stroke-width="9"/>
+    <line class="leg" x1="300" y1="0" x2="150" y2="-250" stroke-width="9"/>
+    <line class="leg" x1="150" y1="-250" x2="150" y2="-300" stroke-width="7"/>
+    <circle class="knob" cx="150" cy="-250" r="15"/>
+    <circle class="knob" cx="150" cy="-306" r="11"/>
+    <path class="tip" d="M -7 -22 L 7 -22 L 0 5 Z"/>
+    <path class="tip" d="M 293 -22 L 307 -22 L 300 5 Z"/>
+  </g>
+  <!-- TRANSPORTADOR: centro en (0,0), borde recto en y=0 -->
+  <g id="transp">
+    <path class="bg" d="M -165 0 A 165 165 0 0 1 165 0 Z" stroke-width="1.5"/>
+    <path class="sym" d="M -142 0 A 142 142 0 0 1 142 0" fill="none" stroke-width="15" stroke-dasharray="2.5 22" opacity=".55"/>
+    <path class="sym" d="M -120 0 A 120 120 0 0 1 120 0" fill="none" stroke-width="1.5" opacity=".4"/>
+    <line class="edge" x1="-165" y1="0" x2="165" y2="0" stroke-width="4.5" stroke-linecap="round"/>
+    <circle class="knob" cx="0" cy="0" r="7"/>
+  </g>
+</defs></svg>
+
+<script>
+const SLIDES=[
+
+/* ═══════════ 1 · PORTADA DEL BLOQUE ═══════════ */
+{cls:'s-portada',noH:true,noF:true,clicks:0,html:`
+<div class="p-inner">
+  <div class="p-badge">I.E. Merceditas Gómez Martínez · Geometría · Grado 7° · Período 3</div>
+  <div class="p-title">Construcciones <em style="color:#E0A93C">básicas</em></div>
+  <div class="p-sub">Semanas 1–4 · Regla, compás, escuadra y transportador</div>
+  <div class="p-sessions">
+    <div class="psess"><div class="psess-n" style="background:var(--s1)">1</div><div class="psess-t">Paralelas y perpendiculares</div><div class="psess-s">Escuadra y cartabón</div></div>
+    <div class="psess on"><div class="psess-n" style="background:var(--s2)">2</div><div class="psess-t">Construcción de triángulos</div><div class="psess-s">LLL · LAL · ALA</div></div>
+    <div class="psess"><div class="psess-n" style="background:var(--s3)">3</div><div class="psess-t">Simetrales</div><div class="psess-s">Mediatriz y equidistancia</div></div>
+    <div class="psess"><div class="psess-n" style="background:var(--s4)">4</div><div class="psess-t">Bisectrices</div><div class="psess-s">Compás y papel doblado</div></div>
+  </div>
+  <div class="click-hint">▶ Haz clic o presiona Espacio para comenzar</div>
+</div>`},
+
+/* ═══════════ 2 · PORTADA DE SESIÓN ═══════════ */
+{noH:true,clicks:0,accent:'--s2',fL:'Construcción de triángulos · Semana 2',html:`
+<div class="cov">
+  <div class="cov-top">
+    <div class="cov-num">2</div>
+    <div style="min-width:0">
+      <div class="cov-kicker">Período 3 · Construcciones básicas · Sesión 2 de 4</div>
+      <div class="cov-title">Construcción de triángulos</div>
+      <div class="cov-sub">LLL &nbsp;·&nbsp; LAL &nbsp;·&nbsp; ALA</div>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="sess-ruta">Exploración → Construcción → Formalización → Aplicación → Metacognición</div>
+  <div class="obj-grid">
+    <div class="obj-card"><div class="obj-n">1</div><div class="obj-tx">Construir un triángulo dados sus <b>tres lados</b>, solo con regla y compás.</div></div>
+    <div class="obj-card"><div class="obj-n">2</div><div class="obj-tx">Construir dados <b>dos lados y el ángulo entre ellos</b>, y dado <b>un lado con sus dos ángulos</b>.</div></div>
+    <div class="obj-card"><div class="obj-n">3</div><div class="obj-tx">Decidir qué juego de <b>tres datos</b> determina una sola cercha para el techo de la placa.</div></div>
+  </div>
+  <div class="tiempo">⏱ 55 minutos &nbsp;·&nbsp; Parejas &nbsp;·&nbsp; Regla, compás y transportador &nbsp;·&nbsp; DUA activo</div>
+</div>`},
+
+/* ═══════════ 3 · EXPLORACIÓN ═══════════ */
+{bread:'Sesión 2 · <b>Exploración</b> · Situación detonante',time:'Exploración · 8 min',accent:'--s2',
+fL:'Exploración — El plano borroso de las cerchas',clicks:2,cls:'s-gancho',html:`
+<div style="display:flex;align-items:flex-start;gap:var(--gap);flex-shrink:0;padding:var(--pad-v) var(--pad-h) 0">
+  <div class="accent" style="background:var(--s2)"></div>
+  <div style="flex:1;min-width:0">
+    <div class="mbadge" style="background:var(--s2)">🏗️ Exploración</div>
+    <div style="font-family:'DM Serif Display',serif;font-size:var(--fs-xl);color:var(--navy);line-height:1.1;margin-top:4px">El plano borroso de las cerchas</div>
+    <div class="slide-instr">Lee, apuesta y escribe tu respuesta en el cuaderno antes de continuar.</div>
+  </div>
+</div>
+<div style="background:#EAF2FB;border-top:3px solid var(--s2);border-bottom:3px solid var(--s2);padding:var(--pad-v) var(--pad-h);flex:1;display:flex;flex-direction:column;gap:var(--gap);min-height:0;margin-top:var(--gap);overflow-y:auto">
+  <div style="font-size:var(--fs-xs);font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--s2);flex-shrink:0">Situación real · Taller de estructuras metálicas, Itagüí · Techo de la placa polideportiva</div>
+  <div id="g-texto" class="rev vis" style="font-family:'DM Serif Display',serif;font-size:var(--fs-lg);color:var(--text);line-height:1.45;font-style:italic">"El plano de las cerchas llegó al taller <strong style="color:var(--red)">manchado y borroso</strong>. De cada una solo se alcanza a leer una parte de los datos y el ingeniero no contesta. El jefe de taller dice que con cualquiera de los tres juegos puede cortar las varillas y empezar a soldar hoy mismo."</div>
+  <div id="g-chips" class="rev" style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);flex-shrink:0">
+    <div style="background:#fff;border:2px solid var(--green);border-top:5px solid var(--green);border-radius:var(--radius);padding:clamp(9px,1.2vh,15px) clamp(11px,1.2vw,18px)">
+      <div style="font-size:var(--fs-xs);font-weight:800;color:var(--green);letter-spacing:.1em;text-transform:uppercase">Cercha A</div>
+      <div style="font-size:var(--fs-md);color:var(--navy);font-weight:700;margin-top:3px">6 m · 5 m · 4 m</div>
+      <div style="font-size:var(--fs-xs);color:var(--text2);font-style:italic">tres lados, ningún ángulo</div>
+    </div>
+    <div style="background:#fff;border:2px solid var(--s2);border-top:5px solid var(--s2);border-radius:var(--radius);padding:clamp(9px,1.2vh,15px) clamp(11px,1.2vw,18px)">
+      <div style="font-size:var(--fs-xs);font-weight:800;color:var(--s2);letter-spacing:.1em;text-transform:uppercase">Cercha B</div>
+      <div style="font-size:var(--fs-md);color:var(--navy);font-weight:700;margin-top:3px">5 m · 50° · 4 m</div>
+      <div style="font-size:var(--fs-xs);color:var(--text2);font-style:italic">el ángulo va entre los dos lados</div>
+    </div>
+    <div style="background:#fff;border:2px solid var(--amber);border-top:5px solid var(--amber);border-radius:var(--radius);padding:clamp(9px,1.2vh,15px) clamp(11px,1.2vw,18px)">
+      <div style="font-size:var(--fs-xs);font-weight:800;color:var(--amber);letter-spacing:.1em;text-transform:uppercase">Cercha C</div>
+      <div style="font-size:var(--fs-md);color:var(--navy);font-weight:700;margin-top:3px">40° · 6 m · 65°</div>
+      <div style="font-size:var(--fs-xs);color:var(--text2);font-style:italic">un lado y sus dos ángulos</div>
+    </div>
+  </div>
+  <div id="g-preg" class="rev" style="background:var(--navy);color:#fff;border-radius:var(--radius);padding:var(--pad-v) var(--pad-h);font-size:var(--fs-md);line-height:1.45;flex-shrink:0">💬 ¿Con cuál de los tres juegos se puede fabricar una cercha, y <strong>una sola</strong>?<br><span style="font-size:var(--fs-sm);color:var(--sky);font-style:italic">Escribe tu apuesta AHORA, antes de construir: ¿alcanzan los datos en los tres casos? ¿En alguno sobran? ¿En alguno podrían salir dos cerchas distintas?</span></div>
+</div>`,
+onReveal:n=>{['g-chips','g-preg'].forEach((id,i)=>{if(i<n)document.getElementById(id).classList.add('vis');});}},
+
+/* ═══════════ 4 · LÁMINA LLL ═══════════ */
+{bread:'Sesión 2 · <b>Lámina de construcción</b> · Cercha A',time:'LLL · 8 min',accent:'--green',
+fL:'Construcción 1 — Criterio LLL (lado · lado · lado)',clicks:4,cls:'s-lamina',html:`
+<div class="lam-body">
+  <div class="sidebar">
+    <div>
+      <div class="stitle">Cercha A · criterio LLL</div>
+      <div class="ssubt">Tres lados dados, ningún ángulo</div>
+    </div>
+    <div class="datos">
+      <b style="background:var(--blue)">AB = 6 cm</b><b style="background:var(--teal)">AC = 5 cm</b><b style="background:var(--amber)">BC = 4 cm</b>
+    </div>
+    <div class="sdiv"></div>
+    <div class="steps">
+      <div class="cstep k1 vis" data-step="1"><span class="n">1</span><span class="t">Traza la base AB = 6 cm</span></div>
+      <div class="cstep k2" data-step="2"><span class="n">2</span><span class="t">Arco desde A · radio 5 cm</span></div>
+      <div class="cstep k3" data-step="3"><span class="n">3</span><span class="t">Arco desde B · radio 4 cm</span></div>
+      <div class="cstep k4" data-step="4"><span class="n">4</span><span class="t">Une C con A y con B</span></div>
+      <div class="cstep k5" data-step="5"><span class="n">5</span><span class="t">Los ángulos ya quedaron fijos</span></div>
+    </div>
+    <div class="sdiv"></div>
+    <div class="mats">
+      <div class="lbl">Recuerda</div>
+      <div class="note">📐 Empieza por el <b>lado más largo</b>: así los arcos se cortan con seguridad.<br>🧭 Cada arco es el conjunto de todos los puntos que están a esa distancia del centro.<br>Los dos arcos se cruzan en <b>un solo punto</b>.</div>
+    </div>
+  </div>
+  <div class="figpanel">
+    <svg viewBox="-20 -20 660 450" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Construcción del triángulo por el criterio LLL">
+      <!-- PASO 1 -->
+      <g class="rev vis" data-step="1">
+        <line x1="60" y1="360" x2="460" y2="360" stroke="#1C3A6E" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="60" cy="360" r="6" fill="#0F2040"/><circle cx="460" cy="360" r="6" fill="#0F2040"/>
+        <text x="34" y="368" font-size="24" font-weight="800" fill="#1C1C1E" font-family="DM Sans,sans-serif">A</text>
+        <text x="474" y="368" font-size="24" font-weight="800" fill="#1C1C1E" font-family="DM Sans,sans-serif">B</text>
+        <text x="260" y="392" text-anchor="middle" font-size="19" font-weight="700" fill="#1C3A6E" font-family="DM Sans,sans-serif">6 cm</text>
+      </g>
+      <!-- PASO 2 · compás en A -->
+      <g class="esc esc-t tool" data-step="2" data-only filter="url(#sombraPlana)">
+        <g transform="translate(60,360) rotate(-41.4) scale(1.111)"><use href="#compas"/></g>
+      </g>
+      <g class="rev" data-step="2">
+        <path class="draw" style="--len:250" d="M 219.7 67.4 A 333.3 333.3 0 0 1 370.4 238.4" fill="none" stroke="#00695C" stroke-width="3"/>
+        <g class="late"><text x="196" y="58" font-size="18" font-weight="700" fill="#00695C" font-family="DM Sans,sans-serif">r = 5 cm</text></g>
+      </g>
+      <!-- PASO 3 · compás en B -->
+      <g class="esc esc-a tool" data-step="3" data-only filter="url(#sombraPlana)">
+        <g transform="translate(460,360) rotate(-124.2) scale(0.889)"><use href="#compas"/></g>
+      </g>
+      <g class="rev" data-step="3">
+        <path class="draw" style="--len:200" d="M 243.7 204 A 266.7 266.7 0 0 1 394.6 101.5" fill="none" stroke="#C47C1A" stroke-width="3"/>
+        <g class="late"><text x="410" y="96" font-size="18" font-weight="700" fill="#C47C1A" font-family="DM Sans,sans-serif">r = 4 cm</text></g>
+      </g>
+      <!-- PASO 4 · regla y lados -->
+      <g class="esc esc-p tool" data-step="4" data-only filter="url(#sombraPlana)">
+        <g transform="translate(60,360) rotate(-41.4)"><use href="#regla"/></g>
+      </g>
+      <g class="rev" data-step="4">
+        <line class="draw" style="--len:340" x1="60" y1="360" x2="310" y2="139.6" stroke="#6A1B9A" stroke-width="3.5"/>
+        <line class="draw" style="--len:280" x1="460" y1="360" x2="310" y2="139.6" stroke="#6A1B9A" stroke-width="3.5"/>
+        <circle cx="310" cy="139.6" r="7" fill="#B83232" class="late"/>
+        <g class="late">
+          <text x="310" y="122" text-anchor="middle" font-size="24" font-weight="800" fill="#B83232" font-family="DM Sans,sans-serif">C</text>
+          <text x="160" y="240" text-anchor="end" font-size="18" font-weight="700" fill="#6A1B9A" font-family="DM Sans,sans-serif">5 cm</text>
+          <text x="410" y="245" text-anchor="start" font-size="18" font-weight="700" fill="#6A1B9A" font-family="DM Sans,sans-serif">4 cm</text>
+        </g>
+      </g>
+      <!-- PASO 5 · ángulos determinados -->
+      <g class="rev" data-step="5">
+        <path d="M 105 360 A 45 45 0 0 0 93.75 330.2" fill="none" stroke="#B83232" stroke-width="2.5"/>
+        <path d="M 415 360 A 45 45 0 0 1 434.7 322.8" fill="none" stroke="#B83232" stroke-width="2.5"/>
+        <path d="M 276.2 169.4 A 45 45 0 0 0 335.3 176.8" fill="none" stroke="#B83232" stroke-width="2.5"/>
+        <text x="310" y="424" text-anchor="middle" font-size="19" font-style="italic" fill="#B83232" font-family="DM Sans,sans-serif">Ningún ángulo fue medido: los tres quedaron determinados por los lados</text>
+      </g>
+    </svg>
+  </div>
+</div>`,
+onReveal:n=>lam(n)},
+
+/* ═══════════ 5 · LÁMINA LAL ═══════════ */
+{bread:'Sesión 2 · <b>Lámina de construcción</b> · Cercha B',time:'LAL · 7 min',accent:'--s2',
+fL:'Construcción 2 — Criterio LAL (lado · ángulo · lado)',clicks:4,cls:'s-lamina',html:`
+<div class="lam-body">
+  <div class="sidebar">
+    <div>
+      <div class="stitle">Cercha B · criterio LAL</div>
+      <div class="ssubt">Dos lados y el ángulo comprendido</div>
+    </div>
+    <div class="datos">
+      <b style="background:var(--blue)">AB = 5 cm</b><b style="background:var(--amber)">Â = 50°</b><b style="background:var(--teal)">AC = 4 cm</b>
+    </div>
+    <div class="sdiv"></div>
+    <div class="steps">
+      <div class="cstep k1 vis" data-step="1"><span class="n">1</span><span class="t">Traza AB = 5 cm y marca el vértice A</span></div>
+      <div class="cstep k3" data-step="2"><span class="n">2</span><span class="t">Transportador en A · marca 50°</span></div>
+      <div class="cstep k2" data-step="3"><span class="n">3</span><span class="t">Compás a 4 cm · corta el rayo en C</span></div>
+      <div class="cstep k4" data-step="4"><span class="n">4</span><span class="t">Une C con B</span></div>
+      <div class="cstep k5" data-step="5"><span class="n">5</span><span class="t">El tercer lado se cerró solo</span></div>
+    </div>
+    <div class="sdiv"></div>
+    <div class="mats">
+      <div class="lbl">Ojo con esto</div>
+      <div class="note">📐 El <b>0°</b> del transportador va sobre el lado AB, y el centro exactamente en A.<br>🧭 El ángulo debe estar <b>entre</b> los dos lados dados. Si estuviera en otro vértice, el resultado ya no sería único.</div>
+    </div>
+  </div>
+  <div class="figpanel">
+    <svg viewBox="-20 -20 660 450" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Construcción del triángulo por el criterio LAL">
+      <!-- PASO 1 -->
+      <g class="rev vis" data-step="1">
+        <line x1="80" y1="360" x2="413.3" y2="360" stroke="#1C3A6E" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="80" cy="360" r="6" fill="#0F2040"/><circle cx="413.3" cy="360" r="6" fill="#0F2040"/>
+        <text x="54" y="368" font-size="24" font-weight="800" fill="#1C1C1E" font-family="DM Sans,sans-serif">A</text>
+        <text x="428" y="368" font-size="24" font-weight="800" fill="#1C1C1E" font-family="DM Sans,sans-serif">B</text>
+        <text x="246" y="392" text-anchor="middle" font-size="19" font-weight="700" fill="#1C3A6E" font-family="DM Sans,sans-serif">5 cm</text>
+      </g>
+      <!-- PASO 2 · transportador -->
+      <g class="esc esc-a tool" data-step="2" data-only filter="url(#sombraPlana)">
+        <g transform="translate(80,360)"><use href="#transp"/></g>
+      </g>
+      <g class="rev" data-step="2">
+        <line class="draw" style="--len:390" x1="80" y1="360" x2="324.3" y2="68.9" stroke="#C47C1A" stroke-width="2.5" stroke-dasharray="390"/>
+        <g class="late">
+          <path d="M 140 360 A 60 60 0 0 0 118.6 314" fill="none" stroke="#C47C1A" stroke-width="3"/>
+          <text x="152" y="336" font-size="20" font-weight="800" fill="#C47C1A" font-family="DM Sans,sans-serif">50°</text>
+        </g>
+      </g>
+      <!-- PASO 3 · compás -->
+      <g class="esc esc-t tool" data-step="3" data-only filter="url(#sombraPlana)">
+        <g transform="translate(80,360) rotate(-50) scale(0.889)"><use href="#compas"/></g>
+      </g>
+      <g class="rev" data-step="3">
+        <path class="draw" style="--len:100" d="M 213.4 129.1 A 266.7 266.7 0 0 1 284.3 188.6" fill="none" stroke="#00695C" stroke-width="3"/>
+        <line class="draw" style="--len:270" x1="80" y1="360" x2="251.4" y2="155.7" stroke="#00695C" stroke-width="4"/>
+        <g class="late">
+          <circle cx="251.4" cy="155.7" r="7" fill="#B83232"/>
+          <text x="251" y="138" text-anchor="middle" font-size="24" font-weight="800" fill="#B83232" font-family="DM Sans,sans-serif">C</text>
+          <text x="138" y="248" text-anchor="end" font-size="18" font-weight="700" fill="#00695C" font-family="DM Sans,sans-serif">4 cm</text>
+        </g>
+      </g>
+      <!-- PASO 4 · regla y tercer lado -->
+      <g class="esc esc-p tool" data-step="4" data-only filter="url(#sombraPlana)">
+        <g transform="translate(251.4,155.7) rotate(51.6)"><use href="#regla"/></g>
+      </g>
+      <g class="rev" data-step="4">
+        <line class="draw" style="--len:270" x1="251.4" y1="155.7" x2="413.3" y2="360" stroke="#6A1B9A" stroke-width="4"/>
+        <g class="late"><text x="350" y="252" text-anchor="start" font-size="18" font-weight="700" fill="#6A1B9A" font-family="DM Sans,sans-serif">≈ 3,9 cm</text></g>
+      </g>
+      <!-- PASO 5 -->
+      <g class="rev" data-step="5">
+        <path d="M 373.3 360 A 40 40 0 0 1 388.5 328.7" fill="none" stroke="#B83232" stroke-width="2.5"/>
+        <path d="M 225.7 186.3 A 40 40 0 0 0 276.3 187.1" fill="none" stroke="#B83232" stroke-width="2.5"/>
+        <text x="280" y="424" text-anchor="middle" font-size="19" font-style="italic" fill="#B83232" font-family="DM Sans,sans-serif">Solo mediste un ángulo: los otros dos y el tercer lado aparecieron solos</text>
+      </g>
+    </svg>
+  </div>
+</div>`,
+onReveal:n=>lam(n)},
+
+/* ═══════════ 6 · LÁMINA ALA ═══════════ */
+{bread:'Sesión 2 · <b>Lámina de construcción</b> · Cercha C',time:'ALA · 7 min',accent:'--amber',
+fL:'Construcción 3 — Criterio ALA (ángulo · lado · ángulo)',clicks:4,cls:'s-lamina',html:`
+<div class="lam-body">
+  <div class="sidebar">
+    <div>
+      <div class="stitle">Cercha C · criterio ALA</div>
+      <div class="ssubt">Un lado y los ángulos de sus extremos</div>
+    </div>
+    <div class="datos">
+      <b style="background:var(--amber)">Â = 40°</b><b style="background:var(--blue)">AB = 6 cm</b><b style="background:var(--purple)">B̂ = 65°</b>
+    </div>
+    <div class="sdiv"></div>
+    <div class="steps">
+      <div class="cstep k1 vis" data-step="1"><span class="n">1</span><span class="t">Traza AB = 6 cm</span></div>
+      <div class="cstep k3" data-step="2"><span class="n">2</span><span class="t">Transportador en A · rayo a 40°</span></div>
+      <div class="cstep k4" data-step="3"><span class="n">3</span><span class="t">Transportador en B · rayo a 65°</span></div>
+      <div class="cstep k5" data-step="4"><span class="n">4</span><span class="t">El cruce de los rayos es C</span></div>
+      <div class="cstep k2" data-step="5"><span class="n">5</span><span class="t">Los dos lados quedaron medidos</span></div>
+    </div>
+    <div class="sdiv"></div>
+    <div class="mats">
+      <div class="lbl">Fíjate</div>
+      <div class="note">🧭 Aquí el <b>compás no interviene</b>: C aparece donde se cortan los rayos.<br>📐 En B el transportador va <b>volteado</b>: el 0° sobre BA, midiendo hacia el mismo lado.<br>Dos rectas no paralelas se cortan <b>una sola vez</b>.</div>
+    </div>
+  </div>
+  <div class="figpanel">
+    <svg viewBox="-20 -20 660 450" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Construcción del triángulo por el criterio ALA">
+      <!-- PASO 1 -->
+      <g class="rev vis" data-step="1">
+        <line x1="60" y1="360" x2="460" y2="360" stroke="#1C3A6E" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="60" cy="360" r="6" fill="#0F2040"/><circle cx="460" cy="360" r="6" fill="#0F2040"/>
+        <text x="34" y="368" font-size="24" font-weight="800" fill="#1C1C1E" font-family="DM Sans,sans-serif">A</text>
+        <text x="474" y="368" font-size="24" font-weight="800" fill="#1C1C1E" font-family="DM Sans,sans-serif">B</text>
+        <text x="260" y="392" text-anchor="middle" font-size="19" font-weight="700" fill="#1C3A6E" font-family="DM Sans,sans-serif">6 cm</text>
+      </g>
+      <!-- PASO 2 · transportador en A -->
+      <g class="esc esc-a tool" data-step="2" data-only filter="url(#sombraPlana)">
+        <g transform="translate(60,360)"><use href="#transp"/></g>
+      </g>
+      <g class="rev" data-step="2">
+        <line class="draw" style="--len:470" x1="60" y1="360" x2="412.4" y2="64.3" stroke="#C47C1A" stroke-width="3"/>
+        <g class="late">
+          <path d="M 120 360 A 60 60 0 0 0 105.96 321.4" fill="none" stroke="#C47C1A" stroke-width="3"/>
+          <text x="132" y="336" font-size="20" font-weight="800" fill="#C47C1A" font-family="DM Sans,sans-serif">40°</text>
+        </g>
+      </g>
+      <!-- PASO 3 · transportador en B (volteado) -->
+      <g class="esc esc-p tool" data-step="3" data-only filter="url(#sombraPlana)">
+        <g transform="translate(460,360) rotate(180)"><use href="#transp"/></g>
+      </g>
+      <g class="rev" data-step="3">
+        <line class="draw" style="--len:340" x1="460" y1="360" x2="320.5" y2="60.9" stroke="#6A1B9A" stroke-width="3"/>
+        <g class="late">
+          <path d="M 400 360 A 60 60 0 0 1 434.6 305.6" fill="none" stroke="#6A1B9A" stroke-width="3"/>
+          <text x="388" y="336" text-anchor="end" font-size="20" font-weight="800" fill="#6A1B9A" font-family="DM Sans,sans-serif">65°</text>
+        </g>
+      </g>
+      <!-- PASO 4 · el cruce -->
+      <g class="rev" data-step="4">
+        <circle cx="347.5" cy="118.7" r="20" fill="none" stroke="#B83232" stroke-width="2.5" opacity=".35"/>
+        <circle cx="347.5" cy="118.7" r="8" fill="#B83232"/>
+        <text x="368" y="112" font-size="26" font-weight="800" fill="#B83232" font-family="DM Serif Display,serif">C</text>
+        <text x="368" y="136" font-size="16" font-style="italic" fill="#3A3A3C" font-family="DM Sans,sans-serif">único punto de corte</text>
+      </g>
+      <!-- PASO 5 · lados resultantes -->
+      <g class="rev" data-step="5">
+        <line x1="60" y1="360" x2="347.5" y2="118.7" stroke="#00695C" stroke-width="4"/>
+        <line x1="460" y1="360" x2="347.5" y2="118.7" stroke="#00695C" stroke-width="4"/>
+        <text x="172" y="228" text-anchor="end" font-size="18" font-weight="700" fill="#00695C" font-family="DM Sans,sans-serif">≈ 5,6 cm</text>
+        <text x="428" y="238" text-anchor="start" font-size="18" font-weight="700" fill="#00695C" font-family="DM Sans,sans-serif">≈ 4,0 cm</text>
+        <text x="260" y="424" text-anchor="middle" font-size="19" font-style="italic" fill="#B83232" font-family="DM Sans,sans-serif">No mediste ningún lado nuevo: la construcción los determinó</text>
+      </g>
+    </svg>
+  </div>
+</div>`,
+onReveal:n=>lam(n)},
+
+/* ═══════════ 7 · FORMALIZACIÓN ═══════════ */
+{bread:'Sesión 2 · <b>Formalización</b> · PPT animado',time:'Formalización · 10 min',accent:'--s2',
+fL:'Formalización — Los criterios de construcción',clicks:4,html:`
+<div class="title-row">
+  <div class="accent" style="background:var(--s2)"></div>
+  <div style="flex:1;min-width:0">
+    <div class="mbadge" style="background:var(--s2)">🔎 Formalización</div>
+    <div class="slide-title">Tres datos bien elegidos bastan</div>
+    <div class="slide-instr">Escribe tu conjetura en el cuaderno ANTES de cada clic. Corrige después con lapicero de otro color, sin borrar.</div>
+  </div>
+</div>
+<div class="hac-grid">
+  <div class="hac-card" style="border-top-color:var(--green)" id="f-1">
+    <div class="hac-head"><div class="hac-tag" style="background:var(--green)">LLL</div><div class="hac-title">Los tres lados</div></div>
+    <div class="hac-task">Mi conjetura: «Con tres lados puedo construir ______ triángulos»</div>
+    <div class="hac-answer" id="fa-1" style="background:#E8F5E9;color:#1B5E20">✓ Un único triángulo: los dos arcos se cortan en un solo punto por encima de la base, y los tres ángulos quedan determinados sin haberlos medido.<br><em>Condición:</em> el lado mayor debe ser menor que la suma de los otros dos, o los arcos no se cruzan.</div>
+  </div>
+  <div class="hac-card" style="border-top-color:var(--s2)" id="f-2">
+    <div class="hac-head"><div class="hac-tag" style="background:var(--s2)">LAL</div><div class="hac-title">Dos lados y el ángulo entre ellos</div></div>
+    <div class="hac-task">Mi conjetura: «El ángulo tiene que estar ______ los dos lados»</div>
+    <div class="hac-answer" id="fa-2" style="background:#EAF2FB;color:#12356B">✓ Un único triángulo, siempre que el ángulo sea el <strong>comprendido</strong> entre los dos lados. El compás corta el rayo en un solo punto y el tercer lado se cierra solo.</div>
+  </div>
+  <div class="hac-card" style="border-top-color:var(--amber)" id="f-3">
+    <div class="hac-head"><div class="hac-tag" style="background:var(--amber)">ALA</div><div class="hac-title">Un lado y sus dos ángulos</div></div>
+    <div class="hac-task">Mi conjetura: «Los dos rayos se cortarán en ______ punto(s)»</div>
+    <div class="hac-answer" id="fa-3" style="background:#FFF7E6;color:#8A5510">✓ Un único triángulo: dos rectas no paralelas se cortan exactamente una vez.<br><em>Condición:</em> los dos ángulos deben sumar menos de 180°, o los rayos nunca se encuentran.</div>
+  </div>
+  <div class="hac-card" style="border-top-color:var(--red)" id="f-4">
+    <div class="hac-head"><div class="hac-tag" style="background:var(--red)">AAA</div><div class="hac-title">¿Y con los tres ángulos?</div></div>
+    <div class="hac-task">Si conozco 40°, 65° y 75°, ¿puedo cortar las varillas?</div>
+    <div class="hac-answer" id="fa-4" style="background:#FDECEC;color:#8E2626">✗ No. Con solo los tres ángulos salen infinitas cerchas: todas con la misma forma pero de distinto tamaño. <strong>Siempre hace falta al menos un lado</strong> para fijar las medidas.</div>
+  </div>
+</div>`,
+onReveal:n=>{
+  document.getElementById('f-'+n).classList.add('vis');
+  setTimeout(()=>{const x=document.getElementById('fa-'+n);if(x)x.style.opacity='1';},800);
+}},
+
+/* ═══════════ 8 · TRANSICIÓN ═══════════ */
+{cls:'s-trans',noH:true,noF:true,clicks:0,html:`
+<div style="text-align:center;padding:0 var(--pad-h)">
+  <div class="trans-big" style="color:#8EB8E5">Tú haces</div>
+  <div class="trans-sub">Las cerchas del techo</div>
+  <div class="trans-note">Ahora sin ayuda: construye, verifica con tu pareja y decide qué le respondes al jefe de taller</div>
+</div>`},
+
+/* ═══════════ 9 · TÚ HACES ═══════════ */
+{bread:'Sesión 2 · <b>Aplicación</b> · Tú haces',time:'Aplicación · 10 min',accent:'--s2',
+fL:'Aplicación — La respuesta al jefe de taller',clicks:2,html:`
+<div class="title-row">
+  <div class="accent" style="background:var(--s2)"></div>
+  <div style="flex:1;min-width:0">
+    <div class="mbadge" style="background:var(--s2)">🛠️ Tú haces</div>
+    <div class="slide-title">Construye, verifica y decide</div>
+    <div class="slide-instr">Deja todos los arcos y las marcas del transportador: son la evidencia de que construiste y no calcaste.</div>
+  </div>
+</div>
+<div class="hac-grid">
+  <div class="hac-card" style="border-top-color:var(--s2)" id="th-1">
+    <div class="hac-head"><div class="hac-n" style="background:var(--s2)">1</div><div class="hac-title">La cercha de refuerzo</div></div>
+    <div class="hac-ctx">El taller debe fabricar una cercha de refuerzo con dos varillas de 6 cm y 4,5 cm que forman entre sí un ángulo de 70°.</div>
+    <div class="hac-task">a) Constrúyela con regla, compás y transportador &nbsp;·&nbsp; b) Mide el tercer lado &nbsp;·&nbsp; c) Compara con tu pareja: ¿coinciden? ¿por qué tenían que coincidir?</div>
+    <div class="hac-answer" id="tha-1" style="background:#EAF2FB;color:#12356B">✓ Es el criterio LAL: el ángulo de 70° está entre los dos lados dados.<br>✓ El tercer lado mide aproximadamente <strong>6,2 cm</strong> en todos los cuadernos.<br>✓ Tenían que coincidir porque LAL determina un único triángulo: no había nada que escoger.</div>
+  </div>
+  <div class="hac-card" style="border-top-color:var(--purple)" id="th-2">
+    <div class="hac-head"><div class="hac-n" style="background:var(--purple)">★</div><div class="hac-title" style="color:var(--purple)">Profundización</div></div>
+    <div class="hac-ctx">Dos varillas de 6 cm y 4 cm, pero ahora el ángulo de 35° <strong>no está entre ellas</strong>: está en el extremo del lado de 6 cm, opuesto al lado de 4 cm.</div>
+    <div class="hac-task">Traza el rayo y corta con el compás abierto a 4 cm. Dibuja <strong>todas</strong> las soluciones. ¿Cuántas cerchas distintas salen con los mismos datos?</div>
+    <div class="hac-answer" id="tha-2" style="background:#F5EAF9;color:#54157A">✓ El arco corta la recta en <strong>dos puntos</strong> → dos triángulos distintos con los mismos tres datos.<br>✓ Por eso «LLA» no es un criterio: el ángulo tiene que ser el comprendido.<br>✓ Conclusión para el taller: no todo juego de tres datos determina una sola pieza.</div>
+  </div>
+</div>`,
+onReveal:n=>{
+  document.getElementById('th-'+n).classList.add('vis');
+  setTimeout(()=>{const x=document.getElementById('tha-'+n);if(x)x.style.opacity='1';},700);
+}},
+
+/* ═══════════ 10 · METACOGNICIÓN ═══════════ */
+{bread:'Sesión 2 · <b>Metacognición</b> · Semáforo',time:'Metacognición · 5 min',accent:'--teal',
+fL:'Metacognición — Semáforo de comprensión · Semana 2',clicks:3,html:`
+<div class="title-row">
+  <div class="accent" style="background:var(--teal)"></div>
+  <div style="flex:1;min-width:0"><div class="mbadge" style="background:var(--teal)">🚦 Metacognición</div><div class="slide-title">¿Cuántos datos son suficientes?</div></div>
+</div>
+<div class="meta-layout">
+  <div class="meta-l">
+    <div class="meta-qbox"><div class="meta-qlbl">Pregunta metacognitiva de la semana</div><div class="meta-qtxt">«Un triángulo tiene seis elementos: tres lados y tres ángulos. Hoy construiste cada cercha con solo tres de ellos. ¿Por qué la mitad de los datos alcanza, y qué hace que unos tríos sirvan y otros no?»</div></div>
+    <div class="cuad-t">Escribe en tu cuaderno:</div>
+    <div class="cuad-items">
+      <div class="cuad-item"><div class="cuad-n">1.</div>¿Qué construcción te resultó más difícil y en qué paso exacto se te complicó?</div>
+      <div class="cuad-item"><div class="cuad-n">2.</div>¿En qué se equivocó tu apuesta inicial sobre las tres cerchas?</div>
+      <div class="cuad-item"><div class="cuad-n">3.</div>Si te dieran tres ángulos y ningún lado, ¿qué le responderías al jefe de taller?</div>
+    </div>
+  </div>
+  <div class="meta-r">
+    <div class="sema-t">Semáforo de comprensión:</div>
+    <div class="sema-items">
+      <div class="sema-item" id="sm-1"><div class="sema-c" style="background:var(--green-s)"></div><div class="sema-txt">Construyo con los tres criterios sin ayuda.<strong>Puedo explicar por qué cada uno da un único triángulo.</strong></div></div>
+      <div class="sema-item" id="sm-2"><div class="sema-c" style="background:var(--amber-s)"></div><div class="sema-txt">Construyo, pero confundo dónde va el ángulo en LAL y en ALA.<strong>Necesito repasar los tres esquemas.</strong></div></div>
+      <div class="sema-item" id="sm-3"><div class="sema-c" style="background:var(--red-s)"></div><div class="sema-txt">Se me pierde la abertura del compás o el 0° del transportador.<strong>Pido acompañamiento antes de la próxima clase.</strong></div></div>
+    </div>
+    <div style="background:var(--s2);border-radius:var(--radius);padding:var(--pad-v) var(--pad-h);font-size:var(--fs-sm);color:#fff;font-style:italic;line-height:1.45">
+      💡 Para la próxima sesión: trae compás. Buscaremos todos los puntos que están a la <strong>misma distancia</strong> de los dos extremos de un segmento. ¿Cuántos crees que hay? Escribe tu predicción.
+    </div>
+  </div>
+</div>`,
+onReveal:n=>{document.getElementById('sm-'+n).classList.add('vis');}}
+
+];/* FIN SLIDES */
+
+/* ═══════════ MOTOR ═══════════ */
+let cur=0,clicks=0;
+const deck=document.getElementById('deck');
+
+/* Revelado de láminas: el paso 1 está visible al entrar; cada clic avanza un paso */
+function lam(n){
+  const sl=deck.querySelector('.slide.active');if(!sl)return;
+  const step=n+1;
+  sl.querySelectorAll('[data-step]').forEach(el=>{
+    const s=parseInt(el.getAttribute('data-step'),10);
+    if(el.hasAttribute('data-only'))el.classList.toggle('vis',s===step);
+    else el.classList.toggle('vis',s<=step);
+  });
+}
+
+function buildSlide(idx){
+  const s=SLIDES[idx];
+  const acc=s.accent?`var(${s.accent})`:'var(--blue-mid)';
+  const d=document.createElement('div');
+  d.className='slide'+(s.cls?' '+s.cls:'');
+  let h='';
+  if(!s.noH)h+=`<div class="hdr"><span class="hdr-b">${s.bread||''}</span>${s.time?`<span class="hdr-t" style="background:${acc}">${s.time}</span>`:''}</div>`;
+  h+=`<div class="body">${s.html}</div>`;
+  if(!s.noF)h+=`<div class="ftr"><span>${s.fL||''}</span><span>I.E. Merceditas Gómez Martínez · Geometría 7° · Período 3</span></div>`;
+  d.innerHTML=h;return d;
+}
+
+function show(idx,dir){
+  const prev=deck.querySelector('.slide.active');
+  if(prev)prev.classList.remove('active','enter-r','enter-l');
+  const el=buildSlide(idx);deck.appendChild(el);
+  const all=deck.querySelectorAll('.slide');if(all.length>3)all[0].remove();
+  requestAnimationFrame(()=>{
+    el.classList.add('active');el.classList.add(dir>=0?'enter-r':'enter-l');
+    setTimeout(()=>el.classList.remove('enter-r','enter-l'),380);
+  });
+  clicks=0;
+  document.getElementById('ncnt').textContent=`${idx+1} / ${SLIDES.length}`;
+  document.getElementById('pbar').style.width=(((idx+1)/SLIDES.length)*100)+'%';
+  document.getElementById('pbar').style.background=SLIDES[idx].accent?`var(${SLIDES[idx].accent})`:'var(--s2)';
+}
+
+function advance(){
+  const s=SLIDES[cur];
+  if(clicks<(s.clicks||0)){clicks++;if(s.onReveal)s.onReveal(clicks);return;}
+  if(cur<SLIDES.length-1){cur++;show(cur,1);}
+}
+function retreat(){if(cur>0){cur--;show(cur,-1);}}
+
+const fsb=document.getElementById('fs-btn');
+fsb.onclick=async e=>{e.stopPropagation();try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen();}catch(err){}};
+document.addEventListener('fullscreenchange',()=>{fsb.textContent=document.fullscreenElement?'✕':'⛶';});
+document.addEventListener('keydown',e=>{
+  if(['Space','ArrowRight','PageDown'].includes(e.code)){e.preventDefault();advance();}
+  else if(['ArrowLeft','PageUp'].includes(e.code)){e.preventDefault();retreat();}
+  else if(e.code==='KeyF'){fsb.click();}
+});
+document.addEventListener('click',e=>{
+  if(e.target.closest('#nav')||e.target.closest('#fs-btn'))return;
+  advance();
+});
+document.getElementById('bn').addEventListener('click',advance);
+document.getElementById('bp').addEventListener('click',retreat);
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50){dx<0?advance():retreat();}});
+setTimeout(()=>{document.getElementById('hint').style.opacity='0';},5000);
+show(0,1);
+</script>
+</body>
+</html>
