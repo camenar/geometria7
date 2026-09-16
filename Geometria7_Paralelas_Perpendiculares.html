@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Geometría 7° · Rectas Paralelas y Perpendiculares · I.E. Merceditas Gómez Martínez</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0F2040;--blue:#1C3A6E;--blue-mid:#2E75B6;
+  --green:#2E7D32;--teal:#00695C;--amber:#C47C1A;--red:#B71C1C;--purple:#6C3483;
+  --cream:#F4F3EF;--warm:#EDECEA;--border:#C0BDB4;
+  --text:#0A0A0B;--text2:#2A2A2C;--text3:#4A4A4E;
+  --green-s:#27AE60;--amber-s:#E08C20;--red-s:#C0392B;
+  --s1:#2E7D32;--sky:#A8C4E8;
+  --fs-xs:clamp(14px,1.3vw,20px);--fs-sm:clamp(16px,1.6vw,24px);
+  --fs-md:clamp(20px,2.0vw,30px);--fs-lg:clamp(24px,2.5vw,36px);
+  --fs-xl:clamp(30px,3.2vw,46px);--fs-2xl:clamp(40px,4.5vw,64px);
+  --fs-3xl:clamp(56px,7vw,100px);--fs-hero:clamp(70px,10vw,140px);
+  --pad-h:clamp(20px,3vw,52px);--pad-v:clamp(14px,1.8vh,28px);
+  --gap:clamp(10px,1.4vh,18px);--hdr-h:clamp(46px,5.5vh,64px);
+  --ftr-h:clamp(36px,4vh,52px);
+  --accent-w:clamp(8px,0.7vw,14px);--radius:clamp(8px,0.8vw,16px);
+  --dot-sz:clamp(32px,3.2vw,46px);
+  --sb:clamp(220px,25vw,360px);
+}
+@media(min-width:1800px){:root{--fs-xs:22px;--fs-sm:26px;--fs-md:32px;--fs-lg:40px;--fs-xl:50px;--fs-2xl:68px;--fs-3xl:110px;--fs-hero:150px;--pad-h:56px;--pad-v:30px;--gap:20px;--hdr-h:68px;--ftr-h:54px}}
+@media(max-width:1200px){:root{--fs-xs:14px;--fs-sm:17px;--fs-md:21px;--fs-lg:26px;--fs-xl:32px;--fs-2xl:44px;--fs-3xl:64px;--fs-hero:88px;--pad-h:24px;--pad-v:12px;--gap:10px;--hdr-h:48px;--ftr-h:38px}}
+@media(max-width:800px){.hac-grid,.meta-layout,.lam-body{grid-template-columns:1fr!important;}.lam-body{grid-template-rows:auto 1fr!important}}
+html,body{width:100%;height:100%;overflow:hidden;background:#111;font-family:'DM Sans',system-ui,sans-serif}
+#deck{width:100vw;height:100vh;position:relative;overflow:hidden}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;background:#fff}
+.slide.active{opacity:1;pointer-events:all}
+.slide.enter-r{animation:inR .35s cubic-bezier(.22,.68,0,1.15) forwards}
+.slide.enter-l{animation:inL .35s cubic-bezier(.22,.68,0,1.15) forwards}
+@keyframes inR{from{transform:translateX(4%);opacity:0}to{transform:none;opacity:1}}
+@keyframes inL{from{transform:translateX(-4%);opacity:0}to{transform:none;opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+@keyframes drawL{to{stroke-dashoffset:0}}
+@keyframes fadeIn2{to{opacity:1}}
+
+.hdr{background:var(--navy);height:var(--hdr-h);display:flex;align-items:center;padding:0 var(--pad-h);justify-content:space-between;flex-shrink:0}
+.hdr-b{font-size:var(--fs-sm);font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#C8DDEF}
+.hdr-t{color:#fff;font-size:var(--fs-sm);font-weight:800;padding:6px 18px;border-radius:5px;letter-spacing:.06em;text-transform:uppercase}
+.ftr{background:var(--warm);border-top:2px solid var(--border);height:var(--ftr-h);display:flex;align-items:center;padding:0 var(--pad-h);justify-content:space-between;flex-shrink:0}
+.ftr span{font-size:var(--fs-sm);color:var(--text3);font-weight:600}
+.body{flex:1;overflow-y:auto;min-height:0;padding:var(--pad-v) var(--pad-h);display:flex;flex-direction:column;gap:var(--gap)}
+
+.s-portada{background:var(--navy);align-items:center;justify-content:center}
+.p-inner{display:flex;flex-direction:column;align-items:center;gap:var(--gap);text-align:center;padding:var(--pad-v) var(--pad-h);width:100%}
+.p-badge{font-size:var(--fs-md);letter-spacing:.1em;text-transform:uppercase;color:#C8DDEF;font-weight:600}
+.p-title{font-family:'DM Serif Display',serif;font-size:var(--fs-hero);color:#fff;line-height:1.05;animation:fadeUp .8s .1s both}
+.p-sub{font-size:var(--fs-lg);color:#C8DDEF;animation:fadeUp .8s .3s both}
+.p-meta{display:flex;gap:var(--gap);margin-top:6px;animation:fadeUp .8s .5s both;justify-content:center;flex-wrap:wrap}
+.p-meta-item{background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.18);border-radius:var(--radius);padding:14px 24px;display:flex;align-items:center;gap:10px}
+.p-meta-item span{font-size:var(--fs-md);color:#C8DDEF;font-weight:600}
+.click-hint-portada{font-size:var(--fs-sm);color:rgba(200,221,239,.6);animation:pulse 2s infinite;margin-top:6px}
+
+.sess-title{font-family:'DM Serif Display',serif;font-size:var(--fs-2xl);color:var(--navy);line-height:1.1}
+.divider{height:2px;background:var(--border);border-radius:1px;flex-shrink:0}
+.obj-list{display:flex;flex-direction:column;gap:var(--gap)}
+.obj-item{display:flex;align-items:flex-start;gap:14px;background:var(--cream);border-radius:var(--radius);padding:var(--pad-v) var(--pad-h);border-left:6px solid var(--blue-mid);font-size:var(--fs-lg);color:var(--text);line-height:1.35}
+.obj-dot{width:var(--dot-sz);height:var(--dot-sz);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:var(--fs-md);font-weight:700;color:#fff;flex-shrink:0;margin-top:2px}
+.tiempo{background:var(--navy);border-radius:var(--radius);padding:var(--pad-v) var(--pad-h);font-size:var(--fs-md);font-weight:600;color:#fff;text-align:center;flex-shrink:0}
+
+.title-row{display:flex;align-items:flex-start;gap:var(--gap)}
+.accent{width:var(--accent-w);border-radius:5px;flex-shrink:0;align-self:stretch;min-height:44px}
+.mbadge{display:inline-flex;align-items:center;gap:8px;background:var(--navy);color:#fff;font-size:var(--fs-sm);font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:7px 18px;border-radius:6px;margin-bottom:4px}
+.slide-title{font-family:'DM Serif Display',serif;font-size:var(--fs-2xl);color:var(--navy);line-height:1.1}
+.slide-instr{font-size:var(--fs-md);color:var(--text2);font-style:italic;margin-top:4px;line-height:1.4}
+
+.det-box{background:#FFF7ED;border:3px solid var(--amber);border-radius:var(--radius);padding:var(--pad-v) var(--pad-h);display:flex;flex-direction:column;gap:var(--gap)}
+.det-label{font-size:var(--fs-sm);font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--amber);flex-shrink:0}
+.det-chips{display:flex;gap:10px;flex-wrap:wrap;flex-shrink:0}
+.det-chip{color:#fff;font-size:var(--fs-md);font-weight:700;padding:7px 18px;border-radius:20px}
+
+.hac-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);flex:1;min-height:0;align-content:start}
+.hac-card{background:#fff;border-radius:var(--radius);border:2px solid var(--border);border-top:5px solid transparent;padding:var(--pad-v) var(--pad-h);display:flex;flex-direction:column;gap:8px;opacity:0;transform:translateY(12px);transition:opacity .45s,transform .45s}
+.hac-card.vis{opacity:1;transform:none}
+.hac-head{display:flex;align-items:center;gap:10px}
+.hac-n{width:var(--dot-sz);height:var(--dot-sz);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:var(--fs-md);color:#fff;flex-shrink:0}
+.hac-title{font-size:var(--fs-lg);font-weight:700;color:var(--text)}
+.hac-ctx{font-size:var(--fs-md);color:var(--text2);font-style:italic;line-height:1.4}
+.hac-body{font-size:var(--fs-md);color:var(--text);line-height:1.5}
+.hac-task{background:var(--cream);border-radius:6px;padding:8px 12px;font-size:var(--fs-md);color:var(--navy);font-style:italic;font-weight:600;border-left:4px solid var(--blue-mid)}
+
+.rv{background:var(--cream);border:2px solid var(--border);border-left:6px solid var(--navy);border-radius:var(--radius);padding:var(--pad-v) var(--pad-h);display:flex;flex-direction:column;gap:8px;opacity:0;transform:translateY(14px);transition:opacity .5s cubic-bezier(.22,.68,0,1.2),transform .5s cubic-bezier(.22,.68,0,1.2)}
+.rv.vis{opacity:1;transform:none}
+.rv-t{font-size:var(--fs-sm);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--navy)}
+.rv-body{font-size:var(--fs-md);color:var(--text);line-height:1.5}
+.rv-formula{background:#fff;border-radius:calc(var(--radius) - 2px);padding:clamp(8px,1.2vh,18px);text-align:center;border:2px solid var(--border);font-family:'DM Serif Display',serif;font-size:var(--fs-xl);color:var(--navy)}
+
+.s-trans{background:var(--navy);align-items:center;justify-content:center}
+.trans-big{font-family:'DM Serif Display',serif;font-size:var(--fs-3xl);color:#fff;line-height:1;animation:fadeUp .6s both}
+.trans-sub{font-size:var(--fs-xl);color:#C8DDEF;animation:fadeUp .6s .2s both}
+.trans-note{font-size:var(--fs-lg);color:rgba(200,221,239,.65);font-style:italic;animation:fadeUp .6s .4s both}
+
+.meta-layout{display:grid;grid-template-columns:1.1fr 1fr;gap:var(--gap);flex:1;min-height:0;align-content:start}
+.meta-l{display:flex;flex-direction:column;gap:var(--gap)}
+.meta-qbox{background:#E0F2F1;border:3px solid var(--teal);border-radius:var(--radius);padding:var(--pad-v) var(--pad-h);display:flex;flex-direction:column;gap:8px}
+.meta-qlbl{font-size:var(--fs-xs);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal)}
+.meta-qtxt{font-family:'DM Serif Display',serif;font-size:var(--fs-lg);color:var(--text);font-style:italic;line-height:1.5}
+.cuad-t{font-size:var(--fs-md);font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.1em}
+.cuad-items{display:flex;flex-direction:column;gap:var(--gap)}
+.cuad-item{display:flex;align-items:flex-start;gap:10px;background:#fff;border-radius:var(--radius);padding:var(--pad-v) var(--pad-h);border-left:5px solid var(--teal);font-size:var(--fs-md);color:var(--text);line-height:1.4}
+.cuad-n{font-weight:700;color:var(--teal);flex-shrink:0;min-width:24px;font-size:var(--fs-md)}
+.meta-r{display:flex;flex-direction:column;gap:var(--gap)}
+.sema-t{font-size:var(--fs-md);font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.1em}
+.sema-items{display:flex;flex-direction:column;gap:var(--gap)}
+.sema-item{display:flex;align-items:center;gap:14px;background:#fff;border-radius:var(--radius);padding:var(--pad-v) var(--pad-h);border:2px solid var(--border);opacity:0;transform:translateX(14px);transition:opacity .5s,transform .5s}
+.sema-item.vis{opacity:1;transform:none}
+.sema-c{width:clamp(40px,4.5vw,62px);height:clamp(40px,4.5vw,62px);border-radius:50%;flex-shrink:0;border:3px solid rgba(0,0,0,.1)}
+.sema-txt{font-size:var(--fs-md);color:var(--text);line-height:1.3}
+.sema-txt strong{display:block;font-size:var(--fs-sm);color:var(--text3);margin-top:2px}
+
+.svg-demo-row{display:flex;gap:var(--gap);flex:1;min-height:0;align-items:stretch}
+.svg-card{background:#fff;border:2px solid var(--border);border-radius:var(--radius);padding:var(--pad-v) var(--pad-h);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;flex:1;opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s}
+.svg-card.vis{opacity:1;transform:none}
+.svg-card svg{width:100%;max-height:clamp(120px,22vh,260px)}
+.svg-card-lbl{font-family:'DM Serif Display',serif;font-size:var(--fs-lg);color:var(--text);text-align:center}
+.svg-card-note{font-size:var(--fs-md);color:var(--text3);text-align:center;line-height:1.4}
+
+/* ── LÁMINA (estilo baricentro) ── */
+.lam-body{display:grid;grid-template-columns:var(--sb) 1fr;grid-template-rows:1fr;flex:1;min-height:0}
+.lam-sb{display:flex;flex-direction:column;padding:var(--pad-v) var(--pad-h);gap:var(--gap);border-right:2.5px solid var(--border);background:var(--warm);overflow-y:auto}
+.lam-title{font-family:'DM Serif Display',serif;font-size:clamp(20px,2.2vw,36px);color:var(--navy);line-height:1.08}
+.lam-subt{font-size:var(--fs-sm);color:var(--text2);font-style:italic;margin-top:2px}
+.lam-div{height:2px;background:var(--border);border-radius:2px;flex-shrink:0}
+.lam-steps{display:flex;flex-direction:column;gap:clamp(6px,1vh,12px);flex:1}
+.cstep{display:flex;align-items:center;gap:clamp(8px,1vw,14px);background:#fff;border:2px solid var(--border);border-radius:10px;border-left:5px solid var(--teal);padding:clamp(7px,1vh,13px) clamp(10px,1.2vw,18px);opacity:.3;transform:translateX(-3px);transition:opacity .4s,transform .4s,box-shadow .3s}
+.cstep.vis{opacity:1;transform:none;box-shadow:0 3px 10px rgba(20,30,60,.08)}
+.cstep .n{width:clamp(28px,2.8vw,38px);height:clamp(28px,2.8vw,38px);border-radius:50%;background:var(--teal);color:#fff;font-weight:800;font-size:var(--fs-xs);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cstep .t{font-size:clamp(13px,1.3vw,20px);font-weight:700;color:var(--navy);line-height:1.15}
+.cstep.c-blue{border-left-color:var(--blue)}.cstep.c-blue .n{background:var(--blue)}
+.cstep.c-teal{border-left-color:var(--teal)}.cstep.c-teal .n{background:var(--teal)}
+.cstep.c-amber{border-left-color:var(--amber)}.cstep.c-amber .n{background:var(--amber)}
+.cstep.c-purple{border-left-color:var(--purple)}.cstep.c-purple .n{background:var(--purple)}
+.cstep.c-red{border-left-color:var(--red)}.cstep.c-red .n{background:var(--red)}
+.cstep.c-green{border-left-color:var(--green)}.cstep.c-green .n{background:var(--green)}
+.lam-mats{background:#E0F2F1;border:2px solid var(--teal);border-radius:10px;padding:clamp(8px,1vh,14px) clamp(10px,1.2vw,16px);flex-shrink:0}
+.lam-mats .lbl{font-size:clamp(11px,1vw,15px);font-weight:800;color:var(--teal);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.lam-mats .note{font-size:clamp(11px,1vw,15px);color:var(--text2);line-height:1.35}
+.lam-fig{display:flex;align-items:center;justify-content:center;padding:clamp(6px,.8vw,14px);background:var(--cream)}
+.lam-fig svg{width:100%;height:100%}
+
+/* SVG reveal + draw */
+.rev{opacity:0;transition:opacity .45s ease}.rev.vis{opacity:1}
+.esc{opacity:0;transform:translate(var(--dx,0),var(--dy,100px));transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .5s ease-out}
+.esc.vis{opacity:1;transform:translate(0,0)}
+.draw-line{stroke-dasharray:550;stroke-dashoffset:550}
+.vis .draw-line{animation:drawL 1s ease-out .7s forwards}
+.delay-reveal{opacity:0}
+.vis .delay-reveal{animation:fadeIn2 .4s ease forwards 1.4s}
+
+#nav{position:fixed;bottom:clamp(12px,2vh,24px);right:clamp(16px,2vw,32px);display:flex;align-items:center;gap:10px;z-index:100}
+.nbtn{width:clamp(44px,4.5vw,60px);height:clamp(44px,4.5vw,60px);border-radius:50%;background:rgba(15,32,64,.88);border:1.5px solid rgba(255,255,255,.18);color:#fff;cursor:pointer;font-size:clamp(18px,2vw,26px);display:flex;align-items:center;justify-content:center;transition:background .2s}
+.nbtn:hover{background:var(--blue-mid)}
+#ncnt{font-size:clamp(16px,1.6vw,22px);color:rgba(255,255,255,.88);background:rgba(15,32,64,.75);padding:6px 18px;border-radius:20px;font-family:monospace;font-weight:600}
+#pbar{position:fixed;bottom:0;left:0;height:5px;background:var(--s1);transition:width .35s ease;z-index:100}
+#fs-btn{position:fixed;top:10px;right:clamp(56px,6vw,80px);z-index:200;background:rgba(15,32,64,.7);border:1px solid rgba(255,255,255,.2);color:#fff;cursor:pointer;font-size:16px;width:34px;height:34px;border-radius:7px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+#fs-btn:hover{background:var(--blue-mid)}
+#hint{position:fixed;bottom:clamp(12px,2vh,24px);left:clamp(16px,2vw,32px);font-size:13px;color:rgba(255,255,255,.5);background:rgba(15,32,64,.65);padding:5px 14px;border-radius:20px;font-family:monospace;transition:opacity .3s}
+</style>
+</head>
+<body>
+<div id="deck"></div>
+<button id="fs-btn" title="Pantalla completa (F)">⛶</button>
+<div id="nav"><button class="nbtn" id="bp">&#8592;</button><span id="ncnt">1 / 1</span><button class="nbtn" id="bn">&#8594;</button></div>
+<div id="pbar"></div>
+<div id="hint">Espacio / → avanzar · ← retroceder · F pantalla completa</div>
+<script>
+const SLIDES=[
+
+/* ═══ 1. PORTADA ═══ */
+{cls:'s-portada',noH:true,noF:true,clicks:0,html:`
+<div class="p-inner">
+  <div class="p-badge">I.E. Merceditas Gómez Martínez · Geometría · Grado 7° · Período 3</div>
+  <div class="p-title">Rectas <em style="color:var(--amber);font-style:normal">Paralelas</em><br>y <em style="color:var(--green-s);font-style:normal">Perpendiculares</em></div>
+  <div class="p-sub">Semana 1 · Construcciones Básicas · Escuadra, regla y compás</div>
+  <div class="p-meta"><div class="p-meta-item"><span>📐 Construcción con instrumentos</span></div><div class="p-meta-item"><span>⏱ 55 min</span></div><div class="p-meta-item"><span>🧭 DBA 6</span></div></div>
+  <div class="click-hint-portada">▶ Haz clic o presiona Espacio para comenzar</div>
+</div>`},
+
+/* ═══ 2. SESIÓN ═══ */
+{noH:true,clicks:0,fL:'Semana 1',html:`
+<div style="display:flex;flex-direction:column;height:100%">
+  <div style="background:var(--s1);padding:var(--pad-v) var(--pad-h);display:flex;align-items:center;gap:var(--gap)">
+    <div style="font-family:'DM Serif Display',serif;font-size:var(--fs-3xl);color:#fff;font-weight:700;line-height:1">1</div>
+    <div><div style="font-size:var(--fs-md);font-weight:700;letter-spacing:.2em;color:rgba(255,255,255,.7);text-transform:uppercase">Semana</div></div>
+  </div>
+  <div style="flex:1;padding:var(--pad-v) var(--pad-h);display:flex;flex-direction:column;gap:var(--gap);overflow-y:auto">
+    <div class="sess-title">Rectas Paralelas y Perpendiculares</div><div class="divider"></div>
+    <div style="font-size:var(--fs-md);color:var(--text3);font-style:italic">Exploración → Construcción → Formalización → Aplicación → Metacognición</div>
+    <div class="obj-list">
+      <div class="obj-item"><div class="obj-dot" style="background:var(--s1)">1</div>Construir rectas paralelas usando escuadra y regla, verificando la equidistancia.</div>
+      <div class="obj-item"><div class="obj-dot" style="background:var(--s1)">2</div>Construir rectas perpendiculares con compás desde un punto sobre la recta y desde un punto exterior.</div>
+      <div class="obj-item"><div class="obj-dot" style="background:var(--s1)">3</div>Distinguir secantes de perpendiculares usando la propiedad del ángulo de 90°.</div>
+    </div>
+    <div class="tiempo" style="background:var(--s1)">⏱ 55 minutos · Yo hago → Hacemos → Tú haces · DUA activo</div>
+  </div>
+</div>`},
+
+/* ═══ 3. DETONANTE ═══ */
+{bread:'Semana 1 › Exploración (10 min)',time:'EXPLORACIÓN · 10 min',fL:'Exploración — Conflicto cognitivo',clicks:3,html:`
+<div class="title-row"><div class="accent" style="background:var(--s1)"></div><div style="flex:1"><div class="mbadge" style="background:var(--s1)">🔍 Exploración</div><div class="slide-title">El maestro de obra del barrio Manrique</div><div class="slide-instr">Lee la situación y dibuja tu primer intento antes de continuar.</div></div></div>
+<div class="det-box" style="border-color:var(--s1);background:#F1F8E9;flex:1;min-height:0;overflow-y:auto">
+  <div class="det-label" style="color:var(--s1)">Situación real · Barrio Manrique, Comuna 3, Medellín</div>
+  <div id="g1-texto" style="font-family:'DM Serif Display',serif;font-size:var(--fs-lg);color:var(--text);line-height:1.45;font-style:italic;opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s">"En el barrio Manrique se construye un bloque de viviendas de interés social junto al polideportivo. El maestro de obra necesita trazar las líneas guía: los muros laterales deben ser <strong style="color:var(--navy)">perfectamente paralelos</strong> (separados 4,20 m) y los frontales <strong style="color:var(--s1)">perpendiculares</strong> a ellos (esquinas de 90°)."</div>
+  <div id="g1-chips" class="det-chips" style="opacity:0;transform:translateY(14px);transition:opacity .5s .1s,transform .5s .1s;flex-wrap:nowrap">
+    <span class="det-chip" style="background:var(--navy);white-space:nowrap">Muros paralelos: 4,20 m</span>
+    <span class="det-chip" style="background:var(--s1);white-space:nowrap">Esquinas: 90° exactos</span>
+    <span class="det-chip" style="background:var(--amber);white-space:nowrap">Herramientas: cuerda + estacas + compás</span>
+  </div>
+  <div id="g1-pregunta" style="background:var(--navy);color:#fff;border-radius:var(--radius);padding:var(--pad-v) var(--pad-h);font-size:var(--fs-md);font-style:italic;line-height:1.45;opacity:0;transform:translateY(14px);transition:opacity .5s .1s,transform .5s .1s">💬 Dibuja dos "muros paralelos" y una "esquina perpendicular" <strong>a mano alzada</strong>. Luego mide: ¿son realmente paralelos? ¿La esquina mide 90°?</div>
+</div>`,
+onReveal:n=>{const s=id=>{const e=document.getElementById(id);if(e){e.style.opacity='1';e.style.transform='none';}};if(n===1)s('g1-texto');if(n===2)s('g1-chips');if(n===3)s('g1-pregunta');}},
+
+/* ═══ 4. POSICIONES RELATIVAS ═══ */
+{bread:'Semana 1 › Exploración › Posiciones relativas',time:'EXPLORACIÓN · 10 min',fL:'Posiciones relativas de dos rectas',clicks:3,html:`
+<div class="title-row"><div class="accent" style="background:var(--s1)"></div><div style="flex:1"><div class="mbadge" style="background:var(--s1)">🔍 Exploración</div><div class="slide-title">Posiciones relativas de dos rectas</div><div class="slide-instr">Antes de construir, observemos qué relaciones pueden tener dos rectas.</div></div></div>
+<div class="svg-demo-row">
+  <div class="svg-card" id="pos-1" style="border-top:5px solid var(--blue)"><svg viewBox="0 0 200 140"><line x1="10" y1="120" x2="190" y2="30" stroke="var(--blue)" stroke-width="3"/><line x1="10" y1="50" x2="190" y2="100" stroke="var(--red)" stroke-width="3"/><circle cx="107" cy="72" r="5" fill="var(--amber)"/><text x="118" y="68" fill="var(--text3)" font-size="14" font-weight="700">≠ 90°</text></svg><div class="svg-card-lbl">Secantes oblicuas</div><div class="svg-card-note">Se cortan pero <strong>no</strong> forman 90°.</div></div>
+  <div class="svg-card" id="pos-2" style="border-top:5px solid var(--teal)"><svg viewBox="0 0 200 140"><line x1="10" y1="90" x2="190" y2="90" stroke="var(--blue)" stroke-width="3"/><line x1="100" y1="20" x2="100" y2="135" stroke="var(--teal)" stroke-width="3"/><rect x="100" y="78" width="14" height="12" fill="none" stroke="var(--amber)" stroke-width="2"/><circle cx="100" cy="90" r="5" fill="var(--amber)"/><text x="118" y="76" fill="var(--amber)" font-size="14" font-weight="700">90°</text></svg><div class="svg-card-lbl">Perpendiculares</div><div class="svg-card-note">Se cortan formando <strong>exactamente 90°</strong>.</div></div>
+  <div class="svg-card" id="pos-3" style="border-top:5px solid var(--green)"><svg viewBox="0 0 200 140"><line x1="10" y1="50" x2="190" y2="50" stroke="var(--blue)" stroke-width="3"/><line x1="10" y1="100" x2="190" y2="100" stroke="var(--green)" stroke-width="3"/><line x1="50" y1="50" x2="50" y2="100" stroke="var(--amber)" stroke-width="1.5" stroke-dasharray="5,3"/><line x1="140" y1="50" x2="140" y2="100" stroke="var(--amber)" stroke-width="1.5" stroke-dasharray="5,3"/><text x="55" y="80" fill="var(--amber)" font-size="13" font-weight="700">d</text><text x="145" y="80" fill="var(--amber)" font-size="13" font-weight="700">d</text></svg><div class="svg-card-lbl">Paralelas</div><div class="svg-card-note"><strong>Nunca se cortan</strong>; distancia constante.</div></div>
+</div>`,
+onReveal:n=>{document.getElementById('pos-'+n)?.classList.add('vis');}},
+
+/* ═══ 5. FORMALIZACIÓN ═══ */
+{bread:'Semana 1 › Formalización (10 min)',time:'FORMALIZACIÓN · 10 min',fL:'Formalización — Definiciones',clicks:3,html:`
+<div class="title-row"><div class="accent" style="background:var(--s1)"></div><div style="flex:1"><div class="mbadge" style="background:var(--s1)">📐 Formalización</div><div class="slide-title">Definiciones formales y notación</div><div class="slide-instr">Antes de ver las definiciones, escribe en tu cuaderno: "Dos rectas son paralelas cuando ___" y "Dos rectas son perpendiculares cuando ___".</div></div></div>
+<div style="display:flex;flex-direction:column;gap:var(--gap);flex:1;min-height:0">
+  <div class="rv" id="f1-1" style="border-left-color:var(--blue)"><div class="rv-t" style="color:var(--blue)">Definición 1</div><div class="rv-formula" style="color:var(--blue)">r ∥ s</div><div class="rv-body"><strong>Rectas paralelas:</strong> la distancia entre ellas es <strong>constante</strong>. Nunca se intersecan. Se lee: "r es paralela a s".</div></div>
+  <div class="rv" id="f1-2" style="border-left-color:var(--teal)"><div class="rv-t" style="color:var(--teal)">Definición 2</div><div class="rv-formula" style="color:var(--teal)">r ⊥ s</div><div class="rv-body"><strong>Rectas perpendiculares:</strong> se intersecan formando cuatro ángulos de <strong>exactamente 90°</strong>. Se lee: "r es perpendicular a s".</div></div>
+  <div class="rv" id="f1-3" style="border-left-color:var(--amber)"><div class="rv-t" style="color:var(--amber)">⚠️ No confundir</div><div class="rv-body"><strong>Toda perpendicular es secante</strong>, pero no toda secante es perpendicular. Verifica el ángulo de 90° con transportador.</div></div>
+</div>`,
+onReveal:n=>{document.getElementById('f1-'+n)?.classList.add('vis');}},
+
+/* ═══ 6. ERROR FRECUENTE ═══ */
+{bread:'Semana 1 › Formalización › Error frecuente',time:'FORMALIZACIÓN · 10 min',fL:'Error frecuente',clicks:3,html:`
+<div class="title-row"><div class="accent" style="background:var(--red)"></div><div style="flex:1"><div class="mbadge" style="background:var(--red)">⚠️ Error frecuente</div><div class="slide-title">¿Son perpendiculares o solo se cruzan?</div><div class="slide-instr">Predice cuál es perpendicular. Luego verifica con el clic.</div></div></div>
+<div class="svg-demo-row">
+  <div class="svg-card" id="err-1" style="border-top:5px solid var(--red)"><svg viewBox="0 0 180 140"><line x1="10" y1="100" x2="170" y2="100" stroke="var(--blue)" stroke-width="3"/><line x1="35" y1="15" x2="135" y2="130" stroke="var(--red)" stroke-width="3"/><text x="70" y="88" fill="var(--red)" font-size="16" font-weight="700">60°</text></svg><div class="svg-card-lbl" style="color:var(--red)">60° — No es perpendicular</div></div>
+  <div class="svg-card" id="err-2" style="border-top:5px solid var(--amber)"><svg viewBox="0 0 180 140"><line x1="10" y1="100" x2="170" y2="100" stroke="var(--blue)" stroke-width="3"/><line x1="58" y1="12" x2="110" y2="132" stroke="var(--amber)" stroke-width="3"/><text x="75" y="88" fill="var(--amber)" font-size="16" font-weight="700">75°</text></svg><div class="svg-card-lbl" style="color:var(--amber)">75° — ¡Parece, pero no!</div></div>
+  <div class="svg-card" id="err-3" style="border-top:5px solid var(--green)"><svg viewBox="0 0 180 140"><line x1="10" y1="90" x2="170" y2="90" stroke="var(--blue)" stroke-width="3"/><line x1="90" y1="12" x2="90" y2="135" stroke="var(--green)" stroke-width="3"/><rect x="90" y="78" width="13" height="12" fill="none" stroke="var(--amber)" stroke-width="2"/><text x="108" y="78" fill="var(--green)" font-size="16" font-weight="700">90° ✓</text></svg><div class="svg-card-lbl" style="color:var(--green)">90° — ¡Perpendicular!</div></div>
+</div>`,
+onReveal:n=>{document.getElementById('err-'+n)?.classList.add('vis');}},
+
+/* ═══ 7. LÁMINA PARALELAS ═══ */
+{noF:true,bread:'Semana 1 › Lámina de construcción',time:'LÁMINA',fL:'',clicks:5,html:`
+<div class="lam-body">
+  <div class="lam-sb">
+    <div><div class="lam-title">Rectas paralelas</div><div class="lam-subt">Con regla y compás · Método de la circunferencia</div></div>
+    <div class="lam-div"></div>
+    <div class="lam-steps">
+      <div class="cstep c-blue vis" id="lp-1"><span class="n">1</span><span class="t">Recta <em>r</em> y punto <em>A</em> dado (externo)</span></div>
+      <div class="cstep c-teal" id="lp-2"><span class="n">2</span><span class="t">Elige un punto <em>B</em> sobre <em>r</em></span></div>
+      <div class="cstep c-amber" id="lp-3"><span class="n">3</span><span class="t">Circunferencia (centro B, radio BA) → corta <em>r</em> en C y D</span></div>
+      <div class="cstep c-purple" id="lp-4"><span class="n">4</span><span class="t">Copia la distancia CA (aguja en C, abre hasta A)</span></div>
+      <div class="cstep c-red" id="lp-5"><span class="n">5</span><span class="t">Mismo radio desde D → punto E</span></div>
+      <div class="cstep c-green" id="lp-6"><span class="n">6</span><span class="t">Une A con E → ¡paralela a <em>r</em>!</span></div>
+    </div>
+    <div class="lam-div"></div>
+    <div class="lam-mats"><div class="lbl">Recuerda</div><div class="note">🔧 Como B es el centro, <b>BC = BD = BA</b> (mismo radio).<br>Al copiar <b>DE = CA</b>, el punto E queda exactamente a la misma altura que A → por eso <b>AE ∥ r</b>.</div></div>
+  </div>
+  <div class="lam-fig">
+    <svg viewBox="-10 -10 580 340" preserveAspectRatio="xMidYMid meet">
+      <!-- Paso 1: recta r + punto A (siempre visible) -->
+      <g class="rev vis" id="rp-1">
+        <line x1="20" y1="260" x2="560" y2="260" stroke="var(--blue)" stroke-width="3"/>
+        <text x="565" y="266" fill="var(--blue)" font-size="20" font-weight="700" font-style="italic" font-family="DM Serif Display,serif">r</text>
+        <circle cx="430" cy="80" r="6" fill="var(--amber)"/>
+        <text x="442" y="74" fill="var(--amber)" font-size="18" font-weight="700" font-style="italic" font-family="DM Serif Display,serif">A</text>
+      </g>
+      <!-- Paso 2: punto B sobre r -->
+      <g class="rev" id="rp-2">
+        <circle cx="280" cy="260" r="5" fill="var(--teal)"/>
+        <text x="270" y="288" fill="var(--teal)" font-size="16" font-weight="700" font-family="DM Serif Display,serif">B</text>
+      </g>
+      <!-- Paso 3: circunferencia (B, BA) → corta r en C y D -->
+      <g class="rev" id="rp-3">
+        <circle cx="280" cy="260" r="234" fill="none" stroke="var(--amber)" stroke-width="2" opacity=".55"/>
+        <circle cx="46" cy="260" r="5" fill="var(--amber)"/>
+        <text x="24" y="285" fill="var(--amber)" font-size="16" font-weight="700" font-family="DM Serif Display,serif">C</text>
+        <circle cx="514" cy="260" r="5" fill="var(--amber)"/>
+        <text x="520" y="285" fill="var(--amber)" font-size="16" font-weight="700" font-family="DM Serif Display,serif">D</text>
+      </g>
+      <!-- Paso 4: copiar distancia CA (cuerda punteada) -->
+      <g class="rev" id="rp-4">
+        <line x1="46" y1="260" x2="430" y2="80" stroke="var(--red)" stroke-width="2.5" stroke-dasharray="6,4"/>
+        <text x="200" y="175" fill="var(--red)" font-size="13" font-weight="700" font-family="DM Sans" transform="rotate(-24 200 175)">cuerda CA</text>
+      </g>
+      <!-- Paso 5: mismo radio desde D → punto E (segmento gemelo, misma longitud que CA) -->
+      <g class="rev" id="rp-5">
+        <line x1="514" y1="260" x2="130" y2="80" stroke="var(--purple)" stroke-width="2.5" stroke-dasharray="6,4"/>
+        <text x="322" y="175" fill="var(--purple)" font-size="13" font-weight="700" font-family="DM Sans" transform="rotate(-25 322 175)">DE = CA</text>
+        <circle cx="130" cy="80" r="6" fill="var(--green-s)"/>
+        <text x="105" y="70" fill="var(--green-s)" font-size="16" font-weight="700" font-family="DM Serif Display,serif">E</text>
+      </g>
+      <!-- Paso 6: traza la paralela A–E -->
+      <g class="rev" id="rp-6">
+        <line class="draw-line" x1="560" y1="80" x2="20" y2="80" stroke="var(--green-s)" stroke-width="3.5"/>
+        <g class="delay-reveal">
+          <text x="14" y="66" fill="var(--green-s)" font-size="20" font-weight="700" font-style="italic" font-family="DM Serif Display,serif">s</text>
+          <text x="200" y="35" fill="var(--green-s)" font-size="26" font-weight="700" font-family="DM Serif Display,serif">r ∥ s</text>
+          <text x="200" y="55" fill="var(--text3)" font-size="13" font-family="DM Sans">BC = BD = BA y CA = DE ✓</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+</div>
+<div class="ftr"><span>Lámina: Rectas Paralelas — método de la circunferencia</span><span>I.E. Merceditas Gómez Martínez · Geometría 7°</span></div>`,
+onReveal:n=>{
+  for(let i=2;i<=n+1;i++)document.getElementById('lp-'+i)?.classList.add('vis');
+  if(n>=1)document.getElementById('rp-2')?.classList.add('vis');
+  if(n>=2)document.getElementById('rp-3')?.classList.add('vis');
+  if(n>=3)document.getElementById('rp-4')?.classList.add('vis');
+  if(n>=4)document.getElementById('rp-5')?.classList.add('vis');
+  if(n>=5)document.getElementById('rp-6')?.classList.add('vis');
+}},
+
+/* ═══ 8. LÁMINA PERPENDICULARES ═══ */
+{noF:true,bread:'Semana 1 › Lámina de construcción',time:'LÁMINA',fL:'',clicks:4,html:`
+<div class="lam-body">
+  <div class="lam-sb">
+    <div><div class="lam-title">Perpendicular con compás</div><div class="lam-subt">Con regla y compás · Desde un punto externo P</div></div>
+    <div class="lam-div"></div>
+    <div class="lam-steps">
+      <div class="cstep c-blue vis" id="lq-1"><span class="n">1</span><span class="t">Recta <em>r</em> y punto <em>P</em> externo</span></div>
+      <div class="cstep c-teal" id="lq-2"><span class="n">2</span><span class="t">Arco desde P (radio &gt; distancia a r) → corta r en A y B</span></div>
+      <div class="cstep c-amber" id="lq-3"><span class="n">3</span><span class="t">Mismo radio: arco desde A</span></div>
+      <div class="cstep c-purple" id="lq-4"><span class="n">4</span><span class="t">Mismo radio: arco desde B → intersección Q</span></div>
+      <div class="cstep c-green" id="lq-5"><span class="n">5</span><span class="t">Une P con Q → ¡perpendicular!</span></div>
+    </div>
+    <div class="lam-div"></div>
+    <div class="lam-mats"><div class="lbl">Recuerda</div><div class="note">🔧 P está a la misma distancia de A que de B → P pertenece a la <b>mediatriz</b> de AB.<br>Sin cambiar la apertura del compás, A y B "marcan" el otro punto (Q) de esa mediatriz.<br>Verifica con <b>transportador</b>: debe dar 90°.</div></div>
+  </div>
+  <div class="lam-fig">
+    <svg viewBox="-10 -10 580 380" preserveAspectRatio="xMidYMid meet">
+      <!-- Paso 1: recta r + punto P externo (siempre visible) -->
+      <g class="rev vis" id="rq-1">
+        <line x1="20" y1="180" x2="560" y2="180" stroke="var(--blue)" stroke-width="3"/>
+        <text x="565" y="186" fill="var(--blue)" font-size="20" font-weight="700" font-style="italic" font-family="DM Serif Display,serif">r</text>
+        <circle cx="280" cy="40" r="6" fill="var(--amber)"/>
+        <text x="292" y="34" fill="var(--amber)" font-size="18" font-weight="700" font-family="DM Serif Display,serif">P</text>
+      </g>
+      <!-- Paso 2: arco desde P (radio 170) → corta r en A y B -->
+      <g class="rev" id="rq-2">
+        <path d="M 184,180 A 170,170 0 0,0 376,180" fill="none" stroke="var(--teal)" stroke-width="2.5"/>
+        <circle cx="184" cy="180" r="5" fill="var(--red)"/>
+        <text x="160" y="205" fill="var(--red)" font-size="17" font-weight="700" font-family="DM Serif Display,serif">A</text>
+        <circle cx="376" cy="180" r="5" fill="var(--red)"/>
+        <text x="384" y="205" fill="var(--red)" font-size="17" font-weight="700" font-family="DM Serif Display,serif">B</text>
+      </g>
+      <!-- Paso 3: arco desde A (mismo radio), anclado en A y llega hasta Q -->
+      <g class="rev" id="rq-3">
+        <path d="M 184,180 A 200,200 0 0,1 280,320" fill="none" stroke="var(--amber)" stroke-width="2.5" stroke-dasharray="5,3"/>
+      </g>
+      <!-- Paso 4: arco desde B (mismo radio), anclado en B y llega hasta Q -->
+      <g class="rev" id="rq-4">
+        <path d="M 376,180 A 200,200 0 0,0 280,320" fill="none" stroke="var(--purple)" stroke-width="2.5" stroke-dasharray="5,3"/>
+        <circle cx="280" cy="320" r="7" fill="var(--green-s)"/>
+        <text x="292" y="330" fill="var(--green-s)" font-size="18" font-weight="700" font-family="DM Serif Display,serif">Q</text>
+      </g>
+      <!-- Paso 5: línea P–Q = perpendicular + verificación -->
+      <g class="rev" id="rq-5">
+        <line class="draw-line" x1="280" y1="40" x2="280" y2="320" stroke="var(--green-s)" stroke-width="3.5"/>
+        <g class="delay-reveal">
+          <rect x="266" y="166" width="14" height="14" fill="none" stroke="var(--amber)" stroke-width="2.5"/>
+          <text x="300" y="150" fill="var(--amber)" font-size="26" font-weight="700" font-family="DM Serif Display,serif">90°</text>
+          <text x="310" y="250" fill="var(--green-s)" font-size="24" font-weight="700" font-family="DM Serif Display,serif">r ⊥ PQ</text>
+          <text x="310" y="272" fill="var(--text3)" font-size="14" font-family="DM Sans">Perpendicular verificada ✓</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+</div>
+<div class="ftr"><span>Lámina: Perpendicular — desde un punto externo</span><span>I.E. Merceditas Gómez Martínez · Geometría 7°</span></div>`,
+onReveal:n=>{
+  for(let i=2;i<=n+1;i++)document.getElementById('lq-'+i)?.classList.add('vis');
+  if(n>=1)document.getElementById('rq-2')?.classList.add('vis');
+  if(n>=2)document.getElementById('rq-3')?.classList.add('vis');
+  if(n>=3)document.getElementById('rq-4')?.classList.add('vis');
+  if(n>=4)document.getElementById('rq-5')?.classList.add('vis');
+}},
+
+/* ═══ 9. TRANSICIÓN ═══ */
+{cls:'s-trans',noH:true,noF:true,clicks:0,html:`<div class="trans-big">Hacemos y Tú haces</div><div class="trans-sub">Ejercicio guiado + Práctica independiente</div><div class="trans-note">20 minutos · Parejas + Individual</div>`},
+
+/* ═══ 10. HACEMOS ═══ */
+{bread:'Semana 1 › Aplicación (12 min)',time:'HACEMOS · 12 min',fL:'Hacemos — Construcción guiada',clicks:2,html:`
+<div class="title-row"><div class="accent" style="background:var(--s1)"></div><div style="flex:1"><div class="mbadge" style="background:var(--blue)">🤝 Hacemos</div><div class="slide-title">Construcción guiada — En parejas</div><div class="slide-instr">Tu compañero es el verificador: mide y confirma.</div></div></div>
+<div class="hac-grid">
+  <div class="hac-card" id="hc-1" style="border-top-color:var(--blue)"><div class="hac-head"><div class="hac-n" style="background:var(--blue)">a</div><div class="hac-title">Construye la paralela</div></div><div class="hac-body">Segmento <strong>AB = 7 cm</strong> y punto <strong>P</strong> a 3 cm por encima.</div><div class="hac-task">Traza la recta paralela a AB que pasa por P con escuadra y regla.</div><div class="hac-ctx">Tu compañero verifica la distancia AB–paralela en 3 puntos.</div></div>
+  <div class="hac-card" id="hc-2" style="border-top-color:var(--teal)"><div class="hac-head"><div class="hac-n" style="background:var(--teal)">b</div><div class="hac-title">Construye la perpendicular</div></div><div class="hac-body">Desde <strong>P</strong>, construye con compás la perpendicular a AB.</div><div class="hac-task">Los arcos auxiliares deben quedar visibles como evidencia.</div><div class="hac-ctx">Tu compañero verifica con transportador: ¿90°?</div></div>
+</div>`,
+onReveal:n=>{document.getElementById('hc-'+n)?.classList.add('vis');}},
+
+/* ═══ 11. TÚ HACES ═══ */
+{bread:'Semana 1 › Aplicación (12 min)',time:'TÚ HACES · 12 min',fL:'Tú haces — Práctica independiente',clicks:2,html:`
+<div class="title-row"><div class="accent" style="background:var(--s1)"></div><div style="flex:1"><div class="mbadge" style="background:var(--green)">✍️ Tú haces</div><div class="slide-title">Práctica independiente</div><div class="slide-instr">Trabaja individualmente. Deja visibles todos los arcos.</div></div></div>
+<div class="hac-grid">
+  <div class="hac-card" id="th-1" style="border-top-color:var(--green)"><div class="hac-head"><div class="hac-n" style="background:var(--green)">1</div><div class="hac-title">La altura del triángulo</div></div><div class="hac-body">Traza en tu triángulo:</div><div class="hac-task"><strong>(a)</strong> Recta paralela al lado más largo por el vértice opuesto.</div><div class="hac-task" style="border-left-color:var(--teal)"><strong>(b)</strong> Perpendicular desde ese vértice al lado más largo (= la altura).</div></div>
+  <div class="hac-card" id="th-2" style="border-top-color:var(--purple)"><div class="hac-head"><div class="hac-n" style="background:var(--purple)">★</div><div class="hac-title">Variante avanzada</div></div><div class="hac-body">En el plano del parque de <strong>Belén Rincón</strong> (60×35 m, escala 1:200), agrega una cancha 20×12 m.</div><div class="hac-task" style="border-left-color:var(--purple)">Traza la diagonal y construye su perpendicular. ¿Es paralela a algún lado? <strong>Justifica geométricamente.</strong></div></div>
+</div>`,
+onReveal:n=>{document.getElementById('th-'+n)?.classList.add('vis');}},
+
+/* ═══ 12. METACOGNICIÓN ═══ */
+{bread:'Semana 1 › Metacognición (5 min)',time:'METACOGNICIÓN · 5 min',fL:'Cierre — Semáforo + Reflexión',clicks:3,html:`
+<div class="title-row"><div class="accent" style="background:var(--teal)"></div><div style="flex:1"><div class="mbadge" style="background:var(--teal)">🧠 Metacognición</div><div class="slide-title">¿Cómo me fue hoy?</div></div></div>
+<div class="meta-layout">
+  <div class="meta-l">
+    <div class="meta-qbox"><div class="meta-qlbl">Pregunta metacognitiva</div><div class="meta-qtxt">"Si tuvieras que enseñarle a un compañero que faltó hoy cómo construir una recta perpendicular con compás, ¿qué tres instrucciones le darías y cómo le explicarías POR QUÉ funciona?"</div></div>
+    <div class="cuad-t">📓 Escribe en tu cuaderno</div>
+    <div class="cuad-items">
+      <div class="cuad-item"><div class="cuad-n">1.</div>¿Qué diferencia hay entre trazar paralelas con escuadra y con compás?</div>
+      <div class="cuad-item"><div class="cuad-n">2.</div>¿Cómo verifico que dos rectas son paralelas sin transportador?</div>
+      <div class="cuad-item"><div class="cuad-n">3.</div>¿Qué fue lo más difícil hoy y cómo lo resolví?</div>
+    </div>
+  </div>
+  <div class="meta-r">
+    <div class="sema-t">Semáforo de comprensión</div>
+    <div class="sema-items">
+      <div class="sema-item" id="sm-1"><div class="sema-c" style="background:var(--green-s)"></div><div class="sema-txt">Puedo construir paralelas y perpendiculares con precisión y explicar el procedimiento.<strong>Listo para triángulos.</strong></div></div>
+      <div class="sema-item" id="sm-2"><div class="sema-c" style="background:var(--amber-s)"></div><div class="sema-txt">Puedo construir pero necesito revisar algún paso.<strong>Repaso con la guía.</strong></div></div>
+      <div class="sema-item" id="sm-3"><div class="sema-c" style="background:var(--red-s)"></div><div class="sema-txt">Necesito practicar más con los instrumentos.<strong>Pido ayuda al docente.</strong></div></div>
+    </div>
+  </div>
+</div>`,
+onReveal:n=>{document.getElementById('sm-'+n)?.classList.add('vis');}},
+
+];
+
+/* ═══ MOTOR ═══ */
+let cur=0,clicks=0;const deck=document.getElementById('deck');
+function buildSlide(i){const s=SLIDES[i],d=document.createElement('div');d.className='slide'+(s.cls?' '+s.cls:'');let h='';if(!s.noH)h+=`<div class="hdr"><span class="hdr-b">${s.bread||''}</span>${s.time?`<span class="hdr-t" style="background:var(--s1)">${s.time}</span>`:''}</div>`;h+=`<div class="body">${s.html}</div>`;if(!s.noF)h+=`<div class="ftr"><span>${s.fL||''}</span><span>I.E. Merceditas Gómez Martínez · Geometría 7°</span></div>`;d.innerHTML=h;return d;}
+function show(i,dir){const p=deck.querySelector('.slide.active');if(p)p.classList.remove('active','enter-r','enter-l');const el=buildSlide(i);deck.appendChild(el);const all=deck.querySelectorAll('.slide');if(all.length>2)all[0].remove();requestAnimationFrame(()=>{el.classList.add('active');el.classList.add(dir>=0?'enter-r':'enter-l');setTimeout(()=>el.classList.remove('enter-r','enter-l'),380);if(SLIDES[i].onEnter)SLIDES[i].onEnter();});clicks=0;document.getElementById('ncnt').textContent=`${i+1} / ${SLIDES.length}`;document.getElementById('pbar').style.width=(((i+1)/SLIDES.length)*100)+'%';}
+function advance(){const s=SLIDES[cur];if(clicks<(s.clicks||0)){clicks++;if(s.onReveal)s.onReveal(clicks);return;}if(cur<SLIDES.length-1){cur++;show(cur,1);}}
+function retreat(){if(cur>0){cur--;show(cur,-1);}}
+document.getElementById('fs-btn').addEventListener('click',()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen().catch(()=>{});else document.exitFullscreen().catch(()=>{});});
+document.addEventListener('fullscreenchange',()=>{document.getElementById('fs-btn').textContent=document.fullscreenElement?'✕':'⛶';});
+document.addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='ArrowRight'){e.preventDefault();advance();}if(e.code==='ArrowLeft'){e.preventDefault();retreat();}if(e.code==='KeyF')document.getElementById('fs-btn').click();});
+document.getElementById('bn').addEventListener('click',advance);
+document.getElementById('bp').addEventListener('click',retreat);
+let tx=0;document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50){dx<0?advance():retreat();}});
+setTimeout(()=>{document.getElementById('hint').style.opacity='0';},5000);
+show(0,1);
+</script>
+</body>
+</html>
